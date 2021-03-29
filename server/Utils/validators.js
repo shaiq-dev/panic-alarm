@@ -1,6 +1,16 @@
-module.exports.validateUserRegisterInput = (username, password, email) => {
+module.exports.validateUserRegisterInput = (
+	name,
+	username,
+	password,
+	email
+) => {
 	const errors = {};
-	const data = { Username: username, Password: password, Email: email };
+	const data = {
+		Name: name,
+		Username: username,
+		Password: password,
+		Email: email,
+	};
 
 	Object.keys(data).map((key, _) => {
 		if ('' === data[key].trim()) {
@@ -49,7 +59,7 @@ module.exports.validateUserRegisterInput = (username, password, email) => {
 	};
 };
 
-module.exports.validateLoginInput = (username, password) => {
+module.exports.validateUserLoginInput = (username, password) => {
 	const errors = {};
 	const data = { Username: username, Password: password };
 
