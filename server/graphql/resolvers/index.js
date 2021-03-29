@@ -1,12 +1,13 @@
-export const resolvers = {
+import userResolver from './user';
+
+const resolvers = {
 	Query: {
-		users(_parent, _args, _context, _info) {
-			return _context.db
-				.collection('users')
-				.findOne()
-				.then((data) => {
-					return data.users;
-				});
-		},
+		...userResolver.Query,
+	},
+
+	Mutation: {
+		...userResolver.Mutation,
 	},
 };
+
+export default resolvers;
