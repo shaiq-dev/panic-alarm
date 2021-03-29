@@ -1,15 +1,28 @@
 import { gql } from 'apollo-server-micro';
 
-export const typeDefs = gql`
+const typeDefs = gql`
 	type User {
 		id: ID!
-		firstName: String!
-		lastName: String!
-		blog: String
-		stars: Int
+		name: String!
+		username: String!
+		email: String!
+		token: String!
+	}
+
+	input UserRegisterInput {
+		name: String!
+		username: String!
+		email: String!
+		password: String!
 	}
 
 	type Query {
-		users: [User]!
+		getUser(userId: ID!): User!
+	}
+
+	type Mutation {
+		registerUser(registerInput: UserRegisterInput): User!
 	}
 `;
+
+export default typeDefs;
