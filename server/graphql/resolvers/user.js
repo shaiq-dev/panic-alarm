@@ -1,5 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { validateUserRegisterInput } from '@/server/Utils/validators';
+import { UserInputError } from 'apollo-server-errors';
 
 const generateAuthToken = (user) => {
 	const _secret = process.env.SECRET;
@@ -23,8 +25,31 @@ const userResolver = {
 			context,
 			info
 		) {
-			//TODO : Validate Input
-			//TODO : Check if user Exists
+			// Validate User Input
+			const { valid, errors } = validateUserRegisterInput(
+				name,
+				username,
+				password,
+				email
+			);
+			if (!valid) {
+				throw new UserInputError('Invalid Data', {
+					errors,
+				});
+			}
+
+			const user = await context.db
+				.collection('Users')
+				.findOne({ username }, { $exists: true })
+				.then((resp) => resp);
+
+			if (user) {
+				throw new UserInputError('User Exists', {
+					errors: {
+						username: 'This username is taken',
+					},
+				});
+			}
 
 			password = await bcrypt.hash(password, 12);
 
