@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "apollo-server-micro": "^2.22.1",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "graphql": "^15.5.0",
     "graphql-tools": "^7.0.4",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.5",
     "next": "10.0.9",
     "react": "17.0.2",
