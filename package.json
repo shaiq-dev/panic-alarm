@@ -16,7 +16,7 @@
     "apollo-client": "^2.6.10",
     "apollo-link-http": "^1.5.17",
     "apollo-link-schema": "^1.2.5",
-    "apollo-server-micro": "^2.22.1",
+    "apollo-server-micro": "^2.22.2",
     "babel-plugin-import": "^1.13.3",
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
