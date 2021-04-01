@@ -27,8 +27,8 @@ const AuthLayout = ({ children, pageTitle }) => {
 					</Link>
 				</div>
 				<p>
-					© Presidency University - PanicAlarm IOT Project by Group 2
-					section 5CSE10{' '}
+					© Presidency University - PanicAlarm IOT Project by Group 2 section
+					6CSE10{' '}
 				</p>
 			</footer>
 		</div>
