@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import { Form, Input, Checkbox, notification } from 'antd';
 
 import AuthLayout from 'components/Auth/AuthLayout';
@@ -16,9 +17,7 @@ export default function Register() {
 	const showNotification = (err) =>
 		notification.error({
 			message: 'Error',
-			description: [
-				Object.values(err).map((v, k) => <span key={k}>{v}</span>),
-			],
+			description: [Object.values(err).map((v, k) => <span key={k}>{v}</span>)],
 			duration: 6,
 		});
 
@@ -45,7 +44,7 @@ export default function Register() {
 			<Head>
 				<title>PanicAlarm | Register</title>
 			</Head>
-			<AuthLayout pageTitle="Register Today">
+			<AuthLayout pageTitle="Create an account">
 				<div className="auth-form">
 					<Form onFinish={onFinish}>
 						<Form.Item
@@ -57,10 +56,7 @@ export default function Register() {
 								},
 							]}
 						>
-							<Input
-								placeholder="Full Name"
-								className="auth-form-input"
-							/>
+							<Input placeholder="Full Name" className="auth-form-input" />
 						</Form.Item>
 
 						<Form.Item
@@ -72,10 +68,7 @@ export default function Register() {
 								},
 							]}
 						>
-							<Input
-								placeholder="Username"
-								className="auth-form-input"
-							/>
+							<Input placeholder="Username" className="auth-form-input" />
 						</Form.Item>
 						<Form.Item
 							name="email"
@@ -90,10 +83,7 @@ export default function Register() {
 								},
 							]}
 						>
-							<Input
-								placeholder="Your Email"
-								className="auth-form-input"
-							/>
+							<Input placeholder="Your Email" className="auth-form-input" />
 						</Form.Item>
 						<Form.Item
 							name="password"
@@ -119,10 +109,7 @@ export default function Register() {
 								},
 							]}
 						>
-							<Input
-								placeholder="Phone Number"
-								className="auth-form-input"
-							/>
+							<Input placeholder="Phone Number" className="auth-form-input" />
 						</Form.Item>
 						<Form.Item
 							name="agreement"
@@ -132,11 +119,7 @@ export default function Register() {
 									validator: (_, value) =>
 										value
 											? Promise.resolve()
-											: Promise.reject(
-													new Error(
-														'Should accept agreement'
-													)
-											  ),
+											: Promise.reject(new Error('Should accept agreement')),
 								},
 							]}
 						>
@@ -144,15 +127,19 @@ export default function Register() {
 								I have read the <a href="">agreement</a>
 							</Checkbox>
 						</Form.Item>
-						<button
-							type="submit"
-							className="btn"
-							disabled={loading}
-						>
+						<button type="submit" className="btn" disabled={loading}>
 							Get Started
 							{loading && <div className="loader"></div>}
 						</button>
 					</Form>
+				</div>
+				<div className="auth-attr">
+					<p>
+						Already a member?{' '}
+						<Link href="/auth/login">
+							<a>Sign In Now</a>
+						</Link>
+					</p>
 				</div>
 			</AuthLayout>
 		</>
