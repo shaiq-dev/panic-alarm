@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import Link from 'next/link';
 import Head from 'next/head';
+import { gql, useMutation } from '@apollo/client';
 import { Form, Input, Checkbox, notification } from 'antd';
 
 import AuthLayout from 'components/Auth/AuthLayout';
-import { gql, useMutation } from '@apollo/client';
-import Link from 'next/link';
 
 export default function Login() {
 	const [values, setValues] = useState({
@@ -19,11 +19,21 @@ export default function Login() {
 			duration: 6,
 		});
 
+	const [addUser, { loading }] = useMutation(LOGIN_USER, {
+		update(_, result) {
+			console.log(result);
+		},
+		onError(err) {
+			showNotification(err.graphQLErrors[0].extensions.exception.errors);
+		},
+		variables: values,
+	});
+
 	const onFinish = (values) => {
 		setValues({
 			...values,
-			name: values.fullname,
 		});
+		addUser();
 	};
 
 	return (
@@ -72,9 +82,9 @@ export default function Login() {
 							</Link>
 						</Form.Item>
 
-						<button type="submit" className="btn" disabled={false}>
+						<button type="submit" className="btn" disabled={loading}>
 							Log In
-							{/* {loading && <div className="loader"></div>} */}
+							{loading && <div className="loader"></div>}
 						</button>
 					</Form>
 				</div>
@@ -90,3 +100,17 @@ export default function Login() {
 		</>
 	);
 }
+
+// GQL Stuff
+
+const LOGIN_USER = gql`
+	mutation loginUser($username: String!, $password: String!) {
+		loginUser(loginInput: { username: $username, password: $password }) {
+			id
+			name
+			email
+			username
+			token
+		}
+	}
+`;
