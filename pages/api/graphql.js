@@ -9,7 +9,7 @@ let db;
 
 const apolloServer = new ApolloServer({
 	schema,
-	context: async () => {
+	context: async ({ req }) => {
 		if (!db) {
 			try {
 				const dbClient = new MongoClient(process.env.MONGO_DB_CON, {
@@ -23,7 +23,7 @@ const apolloServer = new ApolloServer({
 				console.log('[ERROR] Connecting With DB Client', e);
 			}
 		}
-		return { db };
+		return { db, req };
 	},
 });
 
