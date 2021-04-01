@@ -41,6 +41,7 @@
 		flex: 1 1 auto;
 		align-items: center;
 		justify-content: center;
+		flex-direction: column;
 	}
 
 	footer {
@@ -92,6 +93,23 @@
 		&:focus {
 			outline: 0 !important;
 			box-shadow: none !important;
+		}
+	}
+
+	&-forgot {
+		float: right;
+	}
+}
+
+.auth-attr {
+	margin-top: 4rem;
+
+	a {
+		font-weight: 700;
+		color: $c-light-green;
+
+		&:hover {
+			color: $c-dark-green;
 		}
 	}
 }
