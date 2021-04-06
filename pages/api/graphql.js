@@ -1,5 +1,6 @@
 import { ApolloServer } from 'apollo-server-micro';
 import { MongoClient } from 'mongodb';
+import Cookies from 'cookies';
 
 import schema from '@/server/schema';
 
@@ -9,7 +10,7 @@ let db;
 
 const apolloServer = new ApolloServer({
 	schema,
-	context: async ({ req }) => {
+	context: async ({ req, res }) => {
 		if (!db) {
 			try {
 				const dbClient = new MongoClient(process.env.MONGO_DB_CON, {
@@ -23,7 +24,9 @@ const apolloServer = new ApolloServer({
 				console.log('[ERROR] Connecting With DB Client', e);
 			}
 		}
-		return { db, req };
+		const cookies = new Cookies(req, res);
+
+		return { db, cookies, res };
 	},
 });
 
