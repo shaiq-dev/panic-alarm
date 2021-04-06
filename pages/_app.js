@@ -21,7 +21,7 @@ PanicAlarmApp.getInitialProps = async (appCtx) => {
 	let user = null;
 
 	const request = appCtx.ctx.req;
-	if (request) {
+	if (request && request.cookies) {
 		const authToken = request.cookies.authToken;
 		if (authToken) {
 			try {
