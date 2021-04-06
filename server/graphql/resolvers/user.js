@@ -13,7 +13,8 @@ const generateAuthToken = (user) => {
 		{
 			id: user.id,
 			email: user.email,
-			username: user.email,
+			username: user.username,
+			name: user.name,
 		},
 		_secret,
 		{ expiresIn: '5h' }
@@ -103,6 +104,14 @@ const userResolver = {
 			}
 
 			const token = generateAuthToken(user);
+
+			context.cookies.set('authToken', token, {
+				httpOnly: true,
+				sameSite: 'strict',
+				maxAge: 12 * 60 * 60 * 1000,
+				secure: process.env.NODE_ENV === 'production',
+				path: '/',
+			});
 
 			return {
 				...user,
