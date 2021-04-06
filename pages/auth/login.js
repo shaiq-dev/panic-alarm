@@ -30,6 +30,7 @@ export default function Login() {
 			Router.push('/');
 		},
 		onError(err) {
+			console.log(err);
 			let errors;
 			let errorObj = err.graphQLErrors[0].extensions.exception;
 			if (errorObj) errors = errorObj.errors;
