@@ -44,9 +44,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
 
 				if (ssr) {
 					try {
-						const { getDataFromTree } = await import(
-							'@apollo/react-ssr'
-						);
+						const { getDataFromTree } = await import('@apollo/react-ssr');
 						await getDataFromTree(
 							<AppTree
 								pageProps={{
@@ -56,10 +54,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
 							/>
 						);
 					} catch (error) {
-						console.error(
-							'Error while running `getDataFromTree`',
-							error
-						);
+						console.error('Error while running `getDataFromTree`', error);
 					}
 
 					Head.rewind();
