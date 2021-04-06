@@ -30,7 +30,12 @@ export default function Register() {
 			router.push('/auth/login?src=new');
 		},
 		onError(err) {
-			showNotification(err.graphQLErrors[0].extensions.exception.errors);
+			let errors;
+			let errorObj = err.graphQLErrors[0].extensions.exception;
+			if (errorObj) errors = errorObj.errors;
+
+			if (errors) showNotification(errors);
+			else showNotification({ Wrong: 'Something Went Wrong' });
 		},
 		variables: values,
 	});
