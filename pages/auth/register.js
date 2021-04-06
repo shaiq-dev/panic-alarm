@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { gql, useMutation } from '@apollo/client';
 import { Form, Input, Checkbox, notification } from 'antd';
 
 import AuthLayout from 'components/Auth/AuthLayout';
-import { gql, useMutation } from '@apollo/client';
+import checkAuth from '@/server/Utils/checkAuth';
 
 export default function Register() {
+	const router = useRouter();
+
 	const [values, setValues] = useState({
 		name: '',
 		username: '',
@@ -23,7 +27,7 @@ export default function Register() {
 
 	const [addUser, { loading }] = useMutation(REGISTER_USER, {
 		update(proxy, result) {
-			console.log(result);
+			router.push('/auth/login?src=new');
 		},
 		onError(err) {
 			showNotification(err.graphQLErrors[0].extensions.exception.errors);
@@ -145,6 +149,20 @@ export default function Register() {
 		</>
 	);
 }
+
+export const getServerSideProps = async ({ req, res }) => {
+	try {
+		const token = req.cookies.authToken;
+		if (token) {
+			checkAuth(token);
+			res.writeHead(307, { Location: '/?authenticated=true' }).end();
+		}
+	} catch (error) {
+		console.log(error);
+	}
+
+	return { props: {} };
+};
 
 // GQL Stuff
 const REGISTER_USER = gql`

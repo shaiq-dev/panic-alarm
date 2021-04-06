@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
+import Router from 'next/router';
 import { gql, useMutation } from '@apollo/client';
 import { Form, Input, Checkbox, notification } from 'antd';
 
 import AuthLayout from 'components/Auth/AuthLayout';
+import { useAuthDispatch } from 'context/auth';
+import checkAuth from '@/server/Utils/checkAuth';
 
 export default function Login() {
+	const dispatch = useAuthDispatch();
+
 	const [values, setValues] = useState({
 		username: '',
 		psassword: '',
@@ -19,12 +24,15 @@ export default function Login() {
 			duration: 6,
 		});
 
-	const [addUser, { loading }] = useMutation(LOGIN_USER, {
-		update(_, result) {
-			console.log(result);
+	const [signIn, { loading }] = useMutation(LOGIN_USER, {
+		update(_, { data: { loginUser: userData } }) {
+			dispatch({ type: 'LOGIN', payload: userData });
+			Router.push('/');
 		},
 		onError(err) {
-			showNotification(err.graphQLErrors[0].extensions.exception.errors);
+			let errors = err.graphQLErrors[0].extensions.exception.errors;
+			console.log(err);
+			if (errors) showNotification(errors);
 		},
 		variables: values,
 	});
@@ -33,7 +41,7 @@ export default function Login() {
 		setValues({
 			...values,
 		});
-		addUser();
+		signIn();
 	};
 
 	return (
@@ -100,6 +108,20 @@ export default function Login() {
 		</>
 	);
 }
+
+export const getServerSideProps = async ({ req, res }) => {
+	try {
+		const token = req.cookies.authToken;
+		if (token) {
+			checkAuth(token);
+			res.writeHead(307, { Location: '/?authenticated=true' }).end();
+		}
+	} catch (error) {
+		console.log(error);
+	}
+
+	return { props: {} };
+};
 
 // GQL Stuff
 
