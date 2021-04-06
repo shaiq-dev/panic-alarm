@@ -107,7 +107,6 @@ const userResolver = {
 
 			context.cookies.set('authToken', token, {
 				httpOnly: true,
-				sameSite: 'strict',
 				maxAge: 12 * 60 * 60 * 1000,
 				secure: process.env.NODE_ENV === 'production',
 				path: '/',
