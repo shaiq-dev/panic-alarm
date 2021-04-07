@@ -2,6 +2,7 @@
 
 @import 'includes/variables';
 @import 'pages/auth';
+@import 'pages/home';
 
 *,
 *::before,
@@ -21,6 +22,10 @@ body {
 	background-color: #ffffff;
 	color: $c-text-primary;
 	min-height: 100%;
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: hidden;
 }
 
 a {
@@ -47,14 +52,19 @@ a {
 	font-weight: 500;
 	line-height: normal;
 	color: #fff;
-	background-color: var(--green);
+	background-color: $c-blue-dark;
 	border-radius: 4px;
 	padding: 18px 30px;
 	box-shadow: 0 2px 4px 0 unquote('rgb(0 0 0 / 10%)');
-	border: 1px solid var(--green);
+	border: 1px solid $c-blue-dark;
 	transition: transform 150ms, box-shadow 150ms;
 	width: 100%;
 	height: 40px;
+
+	&.danger {
+		background-color: $c-red-dark;
+		border: 1px solid $c-red-dark;
+	}
 
 	&:hover {
 		transform: translateY(-2px);
@@ -100,6 +110,51 @@ a {
 	}
 }
 
+// Classes
+.pa {
+	&-flex {
+		display: flex;
+	}
+
+	&-flex-c {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&-jc {
+		justify-content: center;
+	}
+
+	&-ac {
+		align-items: center;
+	}
+
+	&-flex-1 {
+		flex: 1;
+	}
+
+	&-o-hidden {
+		overflow: hidden !important;
+	}
+
+	&-max-h-full {
+		max-height: 100% !important;
+	}
+
+	&-px-1 {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
+
+	&-mb-05 {
+		margin-bottom: 8px;
+	}
+
+	&-ml-05 {
+		margin-left: 8px;
+	}
+}
+
 // Overrides
 
 .ant-input-affix-wrapper-focused {
@@ -113,4 +168,35 @@ a {
 
 ::placeholder {
 	color: rgba($color: #000000, $alpha: 0.65) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: $c-blue-text;
+}
+
+.pa-alerts-delete-popover {
+	.ant-btn {
+		&:first-child {
+			&:hover,
+			&:focus {
+				border-color: $c-blue-dark;
+				color: $c-blue-dark;
+			}
+		}
+	}
+	.ant-btn-primary {
+		background-color: #f1594b;
+		border-color: #f1594b;
+
+		&:hover,
+		&:focus {
+			background-color: $c-red-dark !important;
+			border-color: $c-red-dark !important;
+		}
+	}
 }
