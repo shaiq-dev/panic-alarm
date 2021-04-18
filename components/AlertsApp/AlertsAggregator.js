@@ -1,14 +1,14 @@
 import Alert from './Alert';
 
-export default function AlertsAggregator({ children }) {
+export default function AlertsAggregator({ date, data }) {
 	return (
 		<div className="alerts-aggregator">
 			<div className="date-seperator">
-				<div className="date-seperator-text">Feburary 10, 2021</div>
+				<div className="date-seperator-text">{date}</div>
 			</div>
-
-			{/* Single Alert */}
-			<Alert />
+			{data.map((a) => (
+				<Alert {...a} key={a.firstOccurance} />
+			))}
 		</div>
 	);
 }

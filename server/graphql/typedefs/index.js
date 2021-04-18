@@ -1,12 +1,35 @@
 import { gql } from 'apollo-server-micro';
 
 const typeDefs = gql`
+	type AlertOccurance {
+		occuredAt: String!
+		pulse: String
+	}
+
+	input AlertInput {
+		alertId: String!
+		type: String!
+		associatedIp: String!
+		pulse: Int!
+		occuredAt: String!
+	}
+
+	type Alert {
+		name: String!
+		firstOccurance: String!
+		type: String!
+		totalOccurances: Int!
+		occurances: [AlertOccurance]!
+		associatedIp: String!
+	}
+
 	type User {
 		id: ID!
 		name: String!
 		username: String!
 		email: String!
 		token: String!
+		alerts: [Alert]
 	}
 
 	input UserRegisterInput {
@@ -22,12 +45,14 @@ const typeDefs = gql`
 	}
 
 	type Query {
-		getUser(userId: ID!): User!
+		# No Queries needed in actual
+		getUser(id: ID!): User!
 	}
 
 	type Mutation {
 		registerUser(registerInput: UserRegisterInput): User!
 		loginUser(loginInput: UserLoginInput): User!
+		addAlert(alertInput: AlertInput): String!
 	}
 `;
 

@@ -59,7 +59,7 @@ const userResolver = {
 
 			const res = await context.db
 				.collection('Users')
-				.insertOne({ name, username, email, password })
+				.insertOne({ name, username, email, password, alerts: [] })
 				.then(({ ops }) => ops[0]);
 
 			const token = generateAuthToken(res);

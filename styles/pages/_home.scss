@@ -7,12 +7,31 @@
 		// box-shadow: 0 1px 1px
 		// 	unquote('rgb(0 0 0 / 1%), 0 10px 30px rgb(0 0 0 / 8%)');
 		z-index: 1000000;
-		padding: 0 1rem;
+		padding: 0 32px;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 
 		.logo {
 			height: 48px;
+		}
+
+		.user-info {
+			margin-right: 32px;
+			.greeting {
+				color: #fff;
+				font-size: 14px;
+				font-weight: 700;
+				max-width: 220px;
+				text-overflow: ellipsis;
+			}
+
+			.user-logout {
+				margin: 0 16px;
+				font-size: 20px;
+				color: #fff;
+				font-weight: 700;
+			}
 		}
 	}
 	&-main {
@@ -24,6 +43,76 @@
 .pa-stats-app {
 	position: relative;
 	height: 100%;
+
+	.stats-container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: 20px;
+
+		&-title-top {
+			display: inline-flex;
+			align-items: center;
+			font-size: 14px;
+			color: $c-text-primary;
+			margin-bottom: 16px;
+
+			.title-top-icon {
+				margin-right: 16px;
+			}
+		}
+
+		&-today {
+			.today-widget {
+				height: 72px;
+				padding: 0 8px;
+				border-radius: 4px;
+				background-color: $c-red-dark;
+				color: #fff;
+				display: inline-flex;
+				align-items: center;
+
+				svg {
+					width: 48px;
+					height: 48px;
+					fill: #fff;
+				}
+
+				.num {
+					font-size: 32px;
+					font-weight: 700;
+					margin-left: 10px;
+				}
+			}
+
+			.today-text {
+				margin: 16px 0;
+				font-weight: 700;
+				font-size: 18px;
+				color: $c-grey-400;
+			}
+
+			.today-widget-single {
+				padding: 16px;
+				width: 100%;
+				border-top-right-radius: 12px;
+				border-bottom-right-radius: 12px;
+				border-left: 5px solid $c-orange;
+				background-color: $c-red-extra-light;
+				color: $c-orange;
+				display: inline-flex;
+				align-items: center;
+				margin-bottom: 10px;
+
+				&.auto {
+					border-color: $c-green-dark;
+					background-color: $c-green-light;
+					color: $c-green-dark;
+				}
+			}
+		}
+	}
 
 	&::before {
 		background: linear-gradient(to right, transparent, #aaa);
@@ -155,6 +244,7 @@
 		position: relative;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 
 		.title {
 			.title-icon {
@@ -178,6 +268,57 @@
 				margin-left: 1rem;
 				font-size: 18px;
 				font-weight: 700;
+			}
+		}
+
+		.options {
+			margin-right: 32px;
+			.info {
+				font-size: 16px;
+				color: $c-grey-400;
+				cursor: pointer;
+				&:hover {
+					color: $c-blue-dark;
+				}
+			}
+
+			.online {
+				padding: 2px 6px;
+				background-color: $c-grey-100;
+				border-radius: 3px;
+				font-size: 12px;
+				margin: 0 10px;
+				color: $c-grey-400;
+
+				.dot {
+					margin-right: 5px;
+					height: 6px;
+					width: 6px;
+					border-radius: 50%;
+					background-color: $c-light-green;
+				}
+			}
+
+			.refresh {
+				display: inline-block;
+				align-items: center;
+				font-size: 13px;
+				font-weight: 700;
+				color: $c-black-light;
+				border: 1px solid #d1d1d1;
+				border-radius: 4px;
+				background-color: #fff;
+				padding: 5px 9px;
+
+				&-icon {
+					font-size: 15px;
+					color: $c-black-light;
+					margin-right: 6px;
+				}
+				&:hover {
+					background-color: #f5f5f5;
+					cursor: pointer;
+				}
 			}
 		}
 
@@ -257,7 +398,8 @@
 	.alerts-aggregator {
 		.date-seperator {
 			height: 25px;
-			margin-top: -0.8px;
+			// margin-top: -0.8px;
+			margin: 16px 0;
 			position: relative;
 			text-align: center;
 			white-space: nowrap;
@@ -289,6 +431,7 @@
 			display: flex;
 			align-items: flex-start;
 			margin-top: 6px;
+			margin-bottom: 10px;
 
 			.single-alert-icon {
 				width: 42px;
@@ -309,6 +452,14 @@
 						height: 26px;
 						fill: $c-orange-fast;
 					}
+
+					&.auto {
+						background-color: $c-red-light;
+
+						svg {
+							fill: $c-red-dark-2;
+						}
+					}
 				}
 			}
 
@@ -319,6 +470,7 @@
 				border-radius: 3px;
 				position: relative;
 				width: 100%;
+				box-shadow: unquote('0 2px 4px -0.75px rgb(0 0 0 / 10%)');
 
 				.single-alert-name {
 					font-size: 12px;
@@ -368,6 +520,19 @@
 							font-size: 12px;
 						}
 					}
+
+					&.auto {
+						background-color: $c-red-light;
+						color: $c-red-dark-2;
+
+						.event-icon {
+							fill: $c-red-dark-2;
+						}
+
+						.event-content {
+							color: $c-red-dark-2;
+						}
+					}
 				}
 
 				.single-alert-footer {
@@ -398,4 +563,11 @@
 			}
 		}
 	}
+}
+
+// Popovers
+.info-help {
+	max-width: 300px;
+	font-size: 13px;
+	color: $c-black-light;
 }

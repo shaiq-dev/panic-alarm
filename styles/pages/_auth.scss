@@ -25,14 +25,14 @@
 			text-align: center;
 			width: 20%;
 			font: bold 24px/28px $font-primary;
-			color: $c-dark-green;
+			color: $c-blue-dark;
 			margin-bottom: 1rem;
 		}
 
 		.page-title {
 			margin-top: 2rem;
 			font: 20px/24px $font-primary;
-			color: $c-dark-green;
+			color: $c-blue-dark;
 		}
 	}
 
@@ -106,10 +106,10 @@
 
 	a {
 		font-weight: 700;
-		color: $c-light-green;
+		color: $c-blue-text;
 
 		&:hover {
-			color: $c-dark-green;
+			color: $c-blue-dark;
 		}
 	}
 }
