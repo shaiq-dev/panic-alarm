@@ -2,6 +2,26 @@ import { UserInputError } from 'apollo-server-errors';
 import { ObjectId } from 'bson';
 
 const alertResolver = {
+	Query: {
+		async getAlerts(_, { username }, context, info) {
+			// TODO: Implement Cookie based authentication here
+
+			const user = await context.db
+				.collection('Users')
+				.findOne({ username }, { $exists: true })
+				.then((resp) => resp);
+
+			if (!user) {
+				throw new UserInputError("User Doesn'tExists", {
+					errors: {
+						username: 'This username is invalid',
+					},
+				});
+			}
+
+			return user.alerts;
+		},
+	},
 	Mutation: {
 		async addAlert(
 			_,

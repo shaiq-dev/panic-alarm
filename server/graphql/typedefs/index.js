@@ -45,8 +45,7 @@ const typeDefs = gql`
 	}
 
 	type Query {
-		# No Queries needed in actual
-		getUser(id: ID!): User!
+		getAlerts(username: String!): [Alert]
 	}
 
 	type Mutation {

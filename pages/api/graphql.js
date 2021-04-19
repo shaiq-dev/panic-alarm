@@ -26,7 +26,7 @@ const apolloServer = new ApolloServer({
 		}
 		const cookies = new Cookies(req, res);
 
-		return { db, cookies, res };
+		return { db, cookies, res, req };
 	},
 });
 

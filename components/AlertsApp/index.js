@@ -6,12 +6,10 @@ import {
 } from '@ant-design/icons';
 
 import AlertCircle from 'assets/alertCircle.svg';
-import AlertsAggregator from './AlertsAggregator';
 import AlertsHelp from './AlertsHelp';
+import AlertsWrapper from './AlertsWrapper';
 
-import { AlertsData } from 'utils/demoData';
-
-export default function AlertsApp() {
+export default function AlertsApp({ user }) {
 	return (
 		<div className="pa-alerts-app">
 			{/* Header */}
@@ -40,12 +38,10 @@ export default function AlertsApp() {
 			</div>
 
 			{/* Alerts Scroll */}
-			<div className="pa-flex-d pa-flex-1 pa-o-hidden pa-max-h-full">
+			<div className="pa-flex-c pa-flex-1 pa-o-hidden pa-max-h-full">
 				<div className="alerts-body">
 					<div className="alerts-body-wrapper">
-						{Object.keys(AlertsData).map((v) => (
-							<AlertsAggregator date={v} data={AlertsData[v]} key={v} />
-						))}
+						<AlertsWrapper username={user.username} />
 					</div>
 				</div>
 			</div>

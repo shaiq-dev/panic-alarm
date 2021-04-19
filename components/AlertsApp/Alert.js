@@ -6,13 +6,20 @@ import { ALERTSCONFIG } from 'utils/constants';
 import { fixSchemaAst } from '@graphql-tools/utils';
 
 export default function Alert({
-	alertName,
+	name,
 	firstOccurance,
 	totalOccurances,
-	IP,
-	lastOccurance,
-	type = ALERTSCONFIG.MANUAL,
+	associatedIp,
+	occurances,
+	type,
 }) {
+	var lastOccurance = new Date(
+		occurances[occurances.length - 1].occuredAt
+	).toLocaleString('en-US', {
+		hour: 'numeric',
+		hour12: true,
+		minute: 'numeric',
+	});
 	return (
 		<div className="single-alert-wrapper">
 			{/* Left Side Icon */}
@@ -25,12 +32,18 @@ export default function Alert({
 			{/* Alert Body */}
 			<div className="single-alert-content">
 				<div className="pa-flex pa-px-1">
-					<div className="single-alert-name">{alertName}</div>
-					<div className="single-alert-time">{firstOccurance}</div>
+					<div className="single-alert-name">{name}</div>
+					<div className="single-alert-time">
+						{new Date(firstOccurance).toLocaleString('en-US', {
+							hour: 'numeric',
+							hour12: true,
+							minute: 'numeric',
+						})}
+					</div>
 				</div>
 				<div className="pa-flex pa-px-1 pa-mb-05">
 					<div className="single-alert-type">
-						{type === ALERTSCONFIG.AUTO ? 'Automatic' : 'Press'} Alert
+						{type === ALERTSCONFIG.AUTO ? 'Automatic' : 'Push Button'} Alert
 					</div>
 				</div>
 				<div
@@ -54,7 +67,8 @@ export default function Alert({
 				<div className="single-alert-footer">
 					<div className="pa-flex-c pa-px-1">
 						<div>
-							This alert was triggered from <a href="https://link.com">{IP}</a>
+							This alert was triggered from{' '}
+							<a href="https://link.com">{associatedIp}</a>
 						</div>
 						<div className="pa-flex pa-ac">
 							<span>Location: Banglore Urban</span>

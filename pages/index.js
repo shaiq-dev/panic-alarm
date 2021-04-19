@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
@@ -15,6 +15,8 @@ import Nav from 'components/Nav';
 export default function Home() {
 	const router = useRouter();
 	const { authenticated, user } = useAuthState();
+	const [alerts, setAlerts] = useState([]);
+	const [alertsLoading, setAlertsLoading] = useState(true);
 
 	return (
 		<>
@@ -34,7 +36,7 @@ export default function Home() {
 								<StatsApp />
 							</Col>
 							<Col flex="auto">
-								<AlertsApp />
+								<AlertsApp user={user} />
 							</Col>
 						</Row>
 					</section>

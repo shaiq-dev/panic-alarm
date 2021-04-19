@@ -338,7 +338,7 @@
 
 	.alerts-body {
 		max-height: 100%;
-		flex-direction: column;
+		flex: 1;
 		position: relative;
 		display: block !important;
 		overflow-x: hidden;
@@ -352,9 +352,17 @@
 		&-wrapper {
 			max-width: 1080px;
 			position: relative;
-			height: 1000px;
+			// height: 1000px;
+			height: 100%;
 			margin: auto;
 			padding: 2rem 0;
+		}
+
+		.alerts-empty {
+			.alerts-empty-body {
+				margin: 0 auto;
+				max-width: 55%;
+			}
 		}
 	}
 
