@@ -28,13 +28,16 @@ const ADDALERT = `
 
 export default function alertHandler(req, res) {
 	var { alertId, pulse } = req.query;
-	const associatedIp = '192.168.1.0';
 	let type = ALERTSCONFIG.AUTO;
 
 	if (!pulse) {
 		type = ALERTSCONFIG.MANUAL;
 		pulse = 0;
 	}
+
+	var associatedIp =
+		req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'N/A';
+	console.log(ip);
 
 	fetch({
 		query: ADDALERT,

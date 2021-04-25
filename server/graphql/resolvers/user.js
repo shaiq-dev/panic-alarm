@@ -15,6 +15,7 @@ const generateAuthToken = (user) => {
 			email: user.email,
 			username: user.username,
 			name: user.name,
+			id: user._id,
 		},
 		_secret,
 		{ expiresIn: '5h' }

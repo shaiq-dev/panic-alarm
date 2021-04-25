@@ -1,5 +1,7 @@
 import { UserInputError } from 'apollo-server-errors';
 import { ObjectId } from 'bson';
+import { sendAlertEmail } from '@/server/Mailer';
+import { ALERTSCONFIG } from 'utils/constants';
 
 const alertResolver = {
 	Query: {
@@ -42,6 +44,31 @@ const alertResolver = {
 						alert: "Either alertId is invalid or doesn't exist",
 					},
 				});
+
+			//Prepare Email Template Vars
+			const dmy = new Date(occuredAt)
+				.toLocaleString('default', {
+					year: 'numeric',
+					month: 'long',
+					day: 'numeric',
+				})
+				.split(' ');
+
+			const t = new Date(occuredAt).toLocaleString('en-US', {
+				hour: 'numeric',
+				hour12: true,
+				minute: 'numeric',
+			});
+
+			const templateVars = {
+				name: user.name,
+				alertName: type === ALERTSCONFIG.AUTO ? 'An Automatic ' : 'A Manual',
+				time: t,
+				location: 'Bangalore',
+				locationUrl: 'https://maps.google.com',
+				dateTime: `${dmy[1]} ${dmy[0]}, ${dmy[2]}, ${t}`,
+				pulse: type === ALERTSCONFIG.AUTO ? pulse : 'N/A',
+			};
 
 			if (user.alerts.length > 0) {
 				let userAlerts = user.alerts;
@@ -89,6 +116,7 @@ const alertResolver = {
 							return docs;
 						}
 					);
+					sendAlertEmail(user.email, templateVars);
 				} else {
 					await context.db.collection('Users').updateOne(
 						{ username: user.username },
@@ -112,6 +140,8 @@ const alertResolver = {
 							return docs;
 						}
 					);
+
+					sendAlertEmail(user.email, templateVars);
 				}
 			} else {
 				await context.db.collection('Users').updateOne(
@@ -135,6 +165,8 @@ const alertResolver = {
 						return docs;
 					}
 				);
+
+				sendAlertEmail(user.email, templateVars);
 			}
 
 			return 'DONE';

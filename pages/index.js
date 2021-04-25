@@ -18,6 +18,8 @@ export default function Home() {
 	const [alerts, setAlerts] = useState([]);
 	const [alertsLoading, setAlertsLoading] = useState(true);
 
+	console.log(user);
+
 	return (
 		<>
 			<Head>
@@ -26,14 +28,14 @@ export default function Home() {
 
 			{authenticated && (
 				<div className="pa-app">
-					<Header />
+					<Header name={user.name} />
 					<section className="pa-app-main">
 						<Row style={{ height: '100%' }}>
 							<Col flex="68px">
 								<Nav />
 							</Col>
 							<Col flex="360px">
-								<StatsApp />
+								<StatsApp user={user} />
 							</Col>
 							<Col flex="auto">
 								<AlertsApp user={user} />

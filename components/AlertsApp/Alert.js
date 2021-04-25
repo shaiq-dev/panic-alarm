@@ -3,7 +3,8 @@ import DirIcon from 'assets/directions.svg';
 import ManualAlertIcon from 'assets/manualAlert.svg';
 import AutoAlertIcon from 'assets/autoAlert.svg';
 import { ALERTSCONFIG } from 'utils/constants';
-import { fixSchemaAst } from '@graphql-tools/utils';
+import { Popover } from 'antd';
+import { EllipsisOutlined } from '@ant-design/icons';
 
 export default function Alert({
 	name,
@@ -13,13 +14,40 @@ export default function Alert({
 	occurances,
 	type,
 }) {
-	var lastOccurance = new Date(
-		occurances[occurances.length - 1].occuredAt
-	).toLocaleString('en-US', {
-		hour: 'numeric',
-		hour12: true,
-		minute: 'numeric',
-	});
+	const dateToTime = (d) =>
+		new Date(d).toLocaleString('en-US', {
+			hour: 'numeric',
+			hour12: true,
+			minute: 'numeric',
+		});
+
+	const alertDate = (d) => {
+		let dmy = new Date(d)
+			.toLocaleString('default', {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+			})
+			.split(' ');
+		return `${dmy[1]} ${dmy[0]}`;
+	};
+
+	var lastOccurance = dateToTime(occurances[occurances.length - 1].occuredAt);
+
+	console.log(occurances);
+
+	const occurancesContent = () => {
+		return (
+			<ul className="alert-occurances">
+				{occurances.map((o) => (
+					<li key={o.occuredAt}>
+						{alertDate(o.occuredAt)}, {dateToTime(o.occuredAt)}
+					</li>
+				))}
+			</ul>
+		);
+	};
+
 	return (
 		<div className="single-alert-wrapper">
 			{/* Left Side Icon */}
@@ -62,6 +90,25 @@ export default function Alert({
 						<span className="event-content-info">
 							Occured {totalOccurances} Times, Last Occurance @ {lastOccurance}
 						</span>
+					</div>
+					<div className="event-detail">
+						<Popover
+							placement="left"
+							title={
+								<h3
+									style={{
+										color: type === ALERTSCONFIG.AUTO ? '#f2484b' : '#ee7956',
+										fontWeight: 700,
+										fontSize: '14px',
+									}}
+								>
+									Alert Occurances
+								</h3>
+							}
+							content={occurancesContent}
+						>
+							<EllipsisOutlined />
+						</Popover>
 					</div>
 				</div>
 				<div className="single-alert-footer">

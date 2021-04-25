@@ -17,7 +17,7 @@
 		}
 
 		.user-info {
-			margin-right: 32px;
+			margin-right: 16px;
 			.greeting {
 				color: #fff;
 				font-size: 14px;
@@ -27,7 +27,7 @@
 			}
 
 			.user-logout {
-				margin: 0 16px;
+				margin-left: 16px;
 				font-size: 20px;
 				color: #fff;
 				font-weight: 700;
@@ -51,6 +51,12 @@
 		height: 100%;
 		padding: 20px;
 
+		.title {
+			font-size: 18px;
+			font-weight: 700;
+			color: $c-blue-text;
+		}
+
 		&-title-top {
 			display: inline-flex;
 			align-items: center;
@@ -60,6 +66,62 @@
 
 			.title-top-icon {
 				margin-right: 16px;
+			}
+		}
+
+		&-user-api {
+			// margin-top: auto;
+			width: 100%;
+			height: 200px;
+			border-radius: 7px;
+			color: $c-text-primary;
+
+			.alert-id-btn {
+				margin: 0 auto;
+				background: #fff;
+				background-image: linear-gradient(-180deg, #fff 0, #efefef);
+				border-radius: 3px;
+				border: 1px solid #d7dbdb;
+				box-shadow: inset 0 -1px 0 0 #d7dbdb;
+				color: #464c4f;
+				display: inline-block;
+				font-size: 14px;
+				font-weight: 400;
+				height: 32px;
+				line-height: 30px;
+				padding: 0 12px;
+				transition: all 120ms ease;
+				text-decoration: none;
+				font-weight: 700;
+				cursor: pointer;
+
+				&:hover {
+					color: #303434;
+					text-decoration: none;
+					border-color: #babdbe;
+					background: #fff;
+					background-image: linear-gradient(-180deg, #fff 0, #e1e3e3);
+					box-shadow: unquote(
+						'inset 0 -1px 0 0 #babdbe, 0 1px 4px 0 rgb(0 0 0 / 10%)'
+					);
+					outline: 0;
+				}
+			}
+
+			.user-api-warn {
+				padding: 12px 16px;
+				font-size: 15px;
+				font-weight: 500;
+				background-color: $c-red-light;
+				color: $c-red-dark-2;
+				border-radius: 4px;
+				border: 1px solid $c-red-dark-2;
+				margin-top: 16px;
+
+				p {
+					margin: 0;
+					margin-left: 12px;
+				}
 			}
 		}
 
@@ -529,6 +591,16 @@
 						}
 					}
 
+					.event-detail {
+						margin-left: auto;
+						font-size: 22px;
+						font-weight: 700;
+
+						&:hover {
+							cursor: pointer;
+						}
+					}
+
 					&.auto {
 						background-color: $c-red-light;
 						color: $c-red-dark-2;
@@ -578,4 +650,12 @@
 	max-width: 300px;
 	font-size: 13px;
 	color: $c-black-light;
+}
+
+.alert-occurances {
+	list-style: none;
+	li {
+		font-size: 14px;
+		color: $c-text-primary;
+	}
 }

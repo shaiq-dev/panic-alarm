@@ -1,14 +1,16 @@
 import { LineChartOutlined } from '@ant-design/icons';
 import TodayWidgetIcon from 'assets/today.svg';
 
-export default function StatsApp() {
+import UserCard from './UserCard';
+
+export default function StatsApp({ user }) {
 	return (
 		<div className="pa-stats-app">
 			<div className="stats-container">
-				<span className="stats-container-title-top">
+				{/* <span className="stats-container-title-top">
 					<LineChartOutlined className="title-top-icon" />
 					PA Stats
-				</span>
+				</span> */}
 
 				{/* <div className="stats-container-today">
 					<div className="today-widget">
@@ -26,6 +28,8 @@ export default function StatsApp() {
 						<span>5 Manually Triggered Alerts</span>
 					</div>
 				</div> */}
+
+				<UserCard alertId={user.id} />
 			</div>
 		</div>
 	);
