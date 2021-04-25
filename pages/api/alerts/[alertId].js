@@ -37,7 +37,6 @@ export default function alertHandler(req, res) {
 
 	var associatedIp =
 		req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'N/A';
-	console.log(ip);
 
 	fetch({
 		query: ADDALERT,
