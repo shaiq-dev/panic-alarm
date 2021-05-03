@@ -71,7 +71,8 @@ class TASK__AnalogTrigg : public Task {
         
         digitalWrite(INDICATOR_LED, HIGH);
         sendDataToHost(-1);
-        delay(1000);
+        // Halt for atleast 1 minute        
+        delay(1000 * 60);
       }
     }  
 } __AnalogTriggTask;
