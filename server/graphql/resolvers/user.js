@@ -5,6 +5,7 @@ import {
 	validateUserLoginInput,
 } from '@/server/Utils/validators';
 import { UserInputError } from 'apollo-server-errors';
+import { LogoutOutlined } from '@ant-design/icons';
 
 const generateAuthToken = (user) => {
 	const _secret = process.env.SECRET;
@@ -119,6 +120,14 @@ const userResolver = {
 				id: user._id,
 				token,
 			};
+		},
+
+		async logoutUser(_, args, context, info) {
+			context.cookies.set('authToken', {
+				maxAge: 0,
+			});
+
+			return 'LOGOUT SUCCESS';
 		},
 	},
 };

@@ -2,16 +2,10 @@ import nodemailer from 'nodemailer';
 import Email from 'email-templates';
 
 const transporter = nodemailer.createTransport({
-	host: 'smtp.gmail.com',
-	port: 587,
-	secure: false,
+	service: 'gmail',
 	auth: {
-		type: 'OAuth2',
 		user: process.env.MAILER_EMAIL,
 		pass: process.env.MAILER_PASS,
-		clientId: process.env.OAUTH_CLIENT_ID,
-		clientSecret: process.env.OAUTH_CLIENT_SECRET,
-		refreshToken: process.env.OAUTH_REFRESH_TOKEN,
 	},
 });
 
@@ -22,7 +16,6 @@ const email = new Email({
 });
 
 export const sendAlertEmail = (to, templateVars) => {
-	console.log('Here');
 	email
 		.send({
 			template: 'alert',
@@ -33,5 +26,5 @@ export const sendAlertEmail = (to, templateVars) => {
 			locals: templateVars,
 		})
 		.then(() => console.log(`Alert has been sent to ${to}`))
-		.catch(console.error);
+		.catch((e) => console.error(e));
 };

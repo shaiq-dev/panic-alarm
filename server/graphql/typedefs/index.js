@@ -51,6 +51,7 @@ const typeDefs = gql`
 	type Mutation {
 		registerUser(registerInput: UserRegisterInput): User!
 		loginUser(loginInput: UserLoginInput): User!
+		logoutUser(lKey: String): String!
 		addAlert(alertInput: AlertInput): String!
 	}
 `;
