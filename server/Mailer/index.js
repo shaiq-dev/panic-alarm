@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import Email from 'email-templates';
+import path from 'path';
 
 const transporter = nodemailer.createTransport({
 	service: 'gmail',
@@ -9,10 +10,14 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
+const mailerRoot = path.join(process.cwd(), '/server/Mailer/emails');
 const email = new Email({
 	transport: transporter,
 	send: true,
 	preview: false,
+	views: {
+		root: mailerRoot,
+	},
 });
 
 export const sendAlertEmail = (to, templateVars) => {
