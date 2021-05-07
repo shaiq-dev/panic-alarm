@@ -6,6 +6,10 @@
  * Presidency University, Bangalore
 */
 
+#define __HALT__ while(1)
+#define __DEBUG__ 1
+#define __READ_RESPONSE__ 1
+#define __max(i, j, k) i > j? (i > k? i: k): (j > k? j: k)
 
 #include <Arduino.h>
 #include <EEPROM.h>
@@ -15,13 +19,9 @@
 #include <Scheduler.h>
 
 
-#define __HALT__ while(1)
-
-#define __DEBUG__ 1
 void __log__(String msg);
-
-
 void sendDataToHost(int pulse);
+int serializeHeartBeat(int counts[]);
 
 // Global Constants 
 const int MANUAL_TRIG_BUTTON = 4;
@@ -50,6 +50,7 @@ float PULSE__Value = 0;
 int PULSE__HeartBeat = 0;
 boolean PULSE__Counted = false;
 int PULSE__IntervalCount = 9;
+int PULSE__SerializeFrequency = 6;
 unsigned long PULSE__MonitorStartTime = 0;
 
 // Watch States
@@ -90,9 +91,9 @@ class TASK__PulseSensor : public Task {
        * always be a successfull outcome. But the chance of hapenning that is less.
       */
 
-      int PULSE__Counts[6];
+      int PULSE__Counts[PULSE__SerializeFrequency];
 
-      for (int i=0; i<6; i++) {
+      for (int i=0; i<PULSE__SerializeFrequency; i++) {
         PULSE__MonitorStartTime = millis();
         while (millis() < PULSE__MonitorStartTime + PULSE_SENSOR_INTERVAL_TIMEOUT) {
           PULSE__Value = analogRead(PULSE_SENSOR_PIN);
@@ -113,14 +114,13 @@ class TASK__PulseSensor : public Task {
         __log__("Heart Beat = " + String(PULSE__Counts[i]));
       }
 
-      int PulseSum = 0;
-      for (int i=0; i<6; i++) PulseSum += PULSE__Counts[i];
-      PULSE__HeartBeat = PulseSum / 6;
+      PULSE__HeartBeat = serializeHeartBeat(PULSE__Counts);
+      yield();
 
-      if (PULSE__HeartBeat <= BPM_LOW || PULSE__HeartBeat >= BPM_HIGH)
+      if (PULSE__HeartBeat >= 0 && (PULSE__HeartBeat <= BPM_LOW || PULSE__HeartBeat >= BPM_HIGH))
         sendDataToHost(PULSE__HeartBeat);
-
       
+      delay(1000 * 60);
     }
 } __PulseSensorTask;
 
@@ -139,16 +139,22 @@ void setup() {
   if (char(EEPROM.read(0)) == 'A') {
     for (int i=1; i<=ALERT_ID_LENGTH; i++)
        ALERT_ID +=  char(EEPROM.read(0x0F+i));
-  } 
+  }
+
+   
+  __log__("[ALERTID] " + String(ALERT_ID));
 
   WiFiManagerParameter alertId("alertid", "Alert ID", ALERT_ID, 40);
   wifiManager.addParameter(&alertId);
   wifiManager.autoConnect(WATCH_HOTSPOT_NAME);
   
   __log__("[WIFI] Connected");
+  
   digitalWrite(BUILTIN_LED, LOW);
 
   const char *TEMP_ALERT_ID = alertId.getValue();
+  __log__(String(TEMP_ALERT_ID));
+  
   if (strlen(TEMP_ALERT_ID) == ALERT_ID_LENGTH && strcmp(TEMP_ALERT_ID, ALERT_ID) != 0) {
     ALERT_ID = TEMP_ALERT_ID;
     EEPROM.write(0, 'A');
@@ -160,8 +166,9 @@ void setup() {
   else {
     // Indicate there is an error by glowing the LED
     // and bring the board to a halt state        
-    digitalWrite(INDICATOR_LED, HIGH);
-    __HALT__;
+    __HALT__{
+      digitalWrite(INDICATOR_LED, HIGH);
+     };
   }
   
   client.setInsecure();
@@ -192,7 +199,7 @@ void loop() {
 */
 void sendDataToHost(int pulse) {
   
-  if (!client.connect(API_HOST, 443)) {
+  if (!client.connect(API_HOST, HTTP_PORT)) {
     __log__(F("Connection failed"));
     return;
   }
@@ -242,9 +249,6 @@ void sendDataToHost(int pulse) {
    *
   */
 
-  // Comment this line in production   
-  #define __READ_RESPONSE__ 1
-
   #ifdef __READ_RESPONSE__      
     while (client.available() && client.peek() != '{') {
       char c = 0;
@@ -258,6 +262,38 @@ void sendDataToHost(int pulse) {
       __log__(String(c));
     }
   #endif
+}
+
+
+
+/*  
+ *  Function : serializeHeartBeat
+ *  It serializes the BPM counts of an interval to an average
+ *  value and maps it with the highest no of occurances of a
+ *  paticular kind [LOW, NORMAL, HIGH]. It can further improvised
+ *  using some advanced statistical techniques
+ *
+*/
+int serializeHeartBeat(int counts[]) {
+   int PulseSum = 0;
+   int fLow = 0, fHigh = 0, fNorm = 0;
+   for (int i=0; i<PULSE__SerializeFrequency; ++i) { 
+    int _p = counts[i];
+    PulseSum += _p;
+    if (_p <= BPM_LOW ) fLow += 1;
+    else if (_p >= BPM_HIGH) fHigh +=1;
+    else fNorm += 1;
+   }
+   int avgHeartBeat = PulseSum / PULSE__SerializeFrequency;
+   if (
+        (avgHeartBeat <= BPM_LOW && __max(fLow, fNorm, fHigh) == fLow) 
+        || 
+        (avgHeartBeat >= BPM_HIGH && __max(fLow, fNorm, fHigh) == fHigh)
+      ) {
+     return avgHeartBeat;
+   }
+
+   return -1;
 }
 
 
