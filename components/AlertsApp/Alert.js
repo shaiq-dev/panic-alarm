@@ -4,7 +4,13 @@ import ManualAlertIcon from 'assets/manualAlert.svg';
 import AutoAlertIcon from 'assets/autoAlert.svg';
 import { ALERTSCONFIG } from 'utils/constants';
 import { Popover } from 'antd';
-import { EllipsisOutlined } from '@ant-design/icons';
+import {
+	EllipsisOutlined,
+	CalendarOutlined,
+	HeartTwoTone,
+	HomeOutlined,
+	GlobalOutlined,
+} from '@ant-design/icons';
 
 export default function Alert({
 	name,
@@ -40,8 +46,24 @@ export default function Alert({
 		return (
 			<ul className="alert-occurances">
 				{occurances.map((o) => (
-					<li key={o.occuredAt}>
-						{alertDate(o.occuredAt)}, {dateToTime(o.occuredAt)}
+					<li key={o.occuredAt} className="single-occurance pa-flex-c">
+						<div className="single-occurance-item pa-flex pa-ac">
+							<span className="single-occurance-item--content">
+								<CalendarOutlined /> {alertDate(o.occuredAt)},{' '}
+								{dateToTime(o.occuredAt)}
+							</span>
+							<span className="single-occurance-item--content last">
+								<HeartTwoTone twoToneColor="#f2484b" /> {o.pulse}
+							</span>
+						</div>
+						<div className="single-occurance-item pa-flex pa-ac">
+							<span className="single-occurance-item--content">
+								<GlobalOutlined /> 192.168.12.34
+							</span>
+							<span className="single-occurance-item--content last">
+								<HomeOutlined /> <a href={o.mapsUrl}>Bangalore</a>
+							</span>
+						</div>
 					</li>
 				))}
 			</ul>
@@ -114,11 +136,11 @@ export default function Alert({
 				<div className="single-alert-footer">
 					<div className="pa-flex-c pa-px-1">
 						<div>
-							This alert was triggered from{' '}
+							This alert was last triggered from{' '}
 							<a href="https://link.com">{associatedIp}</a>
 						</div>
 						<div className="pa-flex pa-ac">
-							<span>Location: Banglore Urban</span>
+							<span>Last Location: Banglore Urban</span>
 						</div>
 					</div>
 					<div className="pa-px-1 pa-flex pa-ac">
