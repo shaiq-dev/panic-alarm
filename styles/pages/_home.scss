@@ -657,5 +657,21 @@
 	li {
 		font-size: 14px;
 		color: $c-text-primary;
+		border-bottom: 1px solid #f0f0f0;
+		padding: 4px 0;
+	}
+
+	.single-occurance {
+		.single-occurance-item {
+			.single-occurance-item--content {
+				&.last {
+					padding-left: 8px;
+				}
+
+				a {
+					color: $c-text-primary;
+				}
+			}
+		}
 	}
 }
