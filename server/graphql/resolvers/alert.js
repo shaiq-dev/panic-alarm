@@ -2,6 +2,7 @@ import { UserInputError } from 'apollo-server-errors';
 import { ObjectId } from 'bson';
 import { sendAlertEmail } from '@/server/Mailer';
 import { ALERTSCONFIG } from 'utils/constants';
+// import fetch from 'node-fetch';
 
 const alertResolver = {
 	Query: {
@@ -70,6 +71,22 @@ const alertResolver = {
 				pulse: type === ALERTSCONFIG.AUTO ? pulse : 'N/A',
 			};
 
+			// let alertOccuranceTimeStamp = {
+			// 	associatedIp,
+			// 	pulse,
+			// };
+
+			// fetch(
+			// 	`http://api.ipstack.com/${associatedIp}?access_key=b5b8f569b56c942699e534967f35753c&format=1`
+			// )
+			// 	.then((response) => response.json())
+			// 	.then((data) => {
+			// 		console.log(data);
+			// 		alertOccuranceTimeStamp.location = data.city + ' ' + data.region;
+			// 		alertOccuranceTimeStamp.mapsUrl = `http://maps.google.com/maps?q=${data.latitude},${data.longitude}`;
+			// 	})
+			// 	.catch((err) => console.log(err));
+
 			if (user.alerts.length > 0) {
 				let userAlerts = user.alerts;
 
@@ -91,6 +108,7 @@ const alertResolver = {
 							type: type,
 							totalOccurances: 1,
 							occurances: [{ occuredAt, pulse }],
+							// occurances: [alertOccuranceTimeStamp],
 							associatedIp: associatedIp,
 						});
 					} else {
@@ -99,6 +117,7 @@ const alertResolver = {
 							firstOccurance: lastAlert.firstOccurance,
 							type: lastAlert.type,
 							totalOccurances: lastAlert.totalOccurances + 1,
+							// occurances: [...lastAlert.occurances, alertOccuranceTimeStamp],
 							occurances: [...lastAlert.occurances, { occuredAt, pulse }],
 							associatedIp: associatedIp,
 						};
@@ -129,6 +148,7 @@ const alertResolver = {
 										firstOccurance: occuredAt,
 										type: type,
 										totalOccurances: 1,
+										// occurances: [alertOccuranceTimeStamp],
 										occurances: [{ occuredAt, pulse }],
 										associatedIp: associatedIp,
 									},
@@ -154,6 +174,7 @@ const alertResolver = {
 									firstOccurance: occuredAt,
 									type: type,
 									totalOccurances: 1,
+									// occurances: [alertOccuranceTimeStamp],
 									occurances: [{ occuredAt, pulse }],
 									associatedIp: associatedIp,
 								},
