@@ -24,7 +24,7 @@
     "cookies": "^0.8.0",
     "domelementtype": "^2.2.0",
     "dotenv": "^8.2.0",
-    "email-templates": "^8.0.4",
+    "email-templates": "^8.0.7",
     "encoding": "^0.1.13",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.11.0",
