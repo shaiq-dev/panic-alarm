@@ -10,26 +10,46 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-const mailerRoot = path.join(process.cwd(), '/server/Mailer/emails');
-const email = new Email({
-	transport: transporter,
-	send: true,
-	preview: false,
-	views: {
-		root: mailerRoot,
-	},
-});
+export const sendAlertEmail = async (to, templateVars) => {
+	console.log('Preparing Email');
+	var mailOptions = {
+		from: 'PanicAlarm Alerts <6cse10panicalarm@gmail.com>',
+		to: to,
+		subject: '[Important][PanicAlarm] Alerts',
+		text: prepareEmailBody(templateVars),
+	};
 
-export const sendAlertEmail = (to, templateVars) => {
-	email
-		.send({
-			template: 'alert',
-			message: {
-				from: 'PanicAlarm Alerts <6cse10panicalarm@gmail.com>',
-				to,
-			},
-			locals: templateVars,
-		})
-		.then(() => console.log(`Alert has been sent to ${to}`))
-		.catch((e) => console.error(e));
+	await transporter.sendMail(mailOptions, (error, info) => {
+		console.log('Sending');
+		if (error) {
+			console.log(error);
+			return;
+		}
+		console.log('Email sent: ' + info.response);
+	});
+};
+
+const prepareEmailBody = ({
+	name,
+	alertName,
+	time,
+	location,
+	dateTime,
+	pulse,
+	locationUrl,
+}) => {
+	let template = `
+	Dear ${name},
+	${alertName} was trigerred from your watch at ${time} today. The approximate predicted location of the occurance is ${location}.
+
+	[DIRECTIONS] ${locationUrl}
+	[TIMESTAMP] ${dateTime} 
+	[PULSE] ${pulse}
+
+	-----------------------------------------
+	6CSE10 IOT Project, Group 2
+	Copyright  2021 Presidency University  All Rights Reserved
+	This email was intended for ${name} . If you received this email by mistake please delete it or report it to panicalarm.vercel.app/contact
+	`;
+	return template;
 };
