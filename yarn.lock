@@ -4751,10 +4751,10 @@ needle@^2.5.2:
     iconv-lite "^0.4.4"
     sax "^1.2.4"
 
-next-plugin-antd-less@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/next-plugin-antd-less/-/next-plugin-antd-less-1.2.2.tgz#03161303f5b0f98b3c1914f20d13c5d8df89f70d"
-  integrity sha512-axW6IKg0TFlez5p3na1AAQu3vOdXQbohpBD3udw9mRcsy+MWa5kuYuYFxk47F7yRr0A+Nb5skp/d81tqLP1nJA==
+next-plugin-antd-less@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/next-plugin-antd-less/-/next-plugin-antd-less-1.4.3.tgz#848bb43e5769356f08f6f60731bd6dcf60bd8eeb"
+  integrity sha512-qU/p9uH3AoTbmIvm3IFfZesDxDYlC4C7+pjuKA0nCUuYOio8nn5L9P1PX/jXbh82PfhO5+y9agjCMpCiPX+23Q==
   dependencies:
     clone "^2.1.2"
     less "^4.1.1"
