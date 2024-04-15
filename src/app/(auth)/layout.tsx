@@ -1,5 +1,4 @@
 import Image from "next/image";
-
 import Logo from "@/assets/logo-full.svg";
 
 export default function AuthLayout({

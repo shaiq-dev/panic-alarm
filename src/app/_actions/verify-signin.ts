@@ -1,13 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-
+import { isUserRegistered, setAuthorizationCookie, verifyValidationContext } from "@/lib/auth";
 import { type ActionResponse } from "@/types";
-import {
-  isUserRegistered,
-  setAuthorizationCookie,
-  verifyValidationContext,
-} from "@/lib/auth";
 import { type SigninInput } from "./signin";
 
 export type VerifySigninInput = {
@@ -17,9 +12,7 @@ export type VerifySigninInput = {
 
 const OTP_EXPIRY_IN_MINS = Number(process.env.OTP_EXPIRY_IN_MINS || 3);
 
-export const verfiySignin = async (
-  input: VerifySigninInput
-): Promise<ActionResponse | void> => {
+export const verfiySignin = async (input: VerifySigninInput): Promise<ActionResponse | void> => {
   const { otp, validationId } = input;
 
   const validationPayload = await verifyValidationContext<SigninInput>({

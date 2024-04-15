@@ -1,6 +1,6 @@
-import mailer, { Templates } from "@/lib/mailer";
 import cypher from "@/lib/cypher";
 import prisma from "@/lib/db";
+import mailer, { Templates } from "@/lib/mailer";
 import { OtpCharacterSet, generateOtp } from "@/utils/generate-otp";
 
 export type CreateValidationContextOptions<P> = {
@@ -23,9 +23,7 @@ export const createValidationContext = async <P = unknown>(
   } = options;
 
   // Encrypt into validation payload
-  const encValidationPayload = cypher.encrypt(
-    JSON.stringify(validationPayload)
-  );
+  const encValidationPayload = cypher.encrypt(JSON.stringify(validationPayload));
   if (!encValidationPayload) {
     return null;
   }

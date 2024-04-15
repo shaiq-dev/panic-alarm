@@ -21,18 +21,11 @@ export const verifyValidationContext = async <P = unknown>(
     },
   });
 
-  if (
-    !otp ||
-    otp.value !== otpValue ||
-    otp.used ||
-    isOtpExpired(otp, otpExpiry)
-  ) {
+  if (!otp || otp.value !== otpValue || otp.used || isOtpExpired(otp, otpExpiry)) {
     return null;
   }
 
-  const validationPayload = JSON.parse(
-    cypher.decrypt(otp.validationPayload) || ""
-  ) as P;
+  const validationPayload = JSON.parse(cypher.decrypt(otp.validationPayload) || "") as P;
   if (!validationPayload) {
     return null;
   }
@@ -48,8 +41,6 @@ export const verifyValidationContext = async <P = unknown>(
 };
 
 const isOtpExpired = (otp: Otp, expiry: number) => {
-  const diff = Math.abs(
-    (new Date().getTime() - otp.updatedAt.getTime()) / (1000 * 60)
-  );
+  const diff = Math.abs((new Date().getTime() - otp.updatedAt.getTime()) / (1000 * 60));
   return diff > expiry;
 };

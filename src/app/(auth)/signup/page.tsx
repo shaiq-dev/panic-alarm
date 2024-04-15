@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { Button, Divider, TextInput } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
 import { useSessionStorage } from "@mantine/hooks";
-
 import {
   ERROR_INAVLID_NAME,
   ERROR_INVALID_EMAIL,
@@ -37,7 +36,7 @@ export default function SignupPage() {
       email: "",
     },
     validate: {
-      name: (value) =>
+      name: value =>
         value.trim().length >= 3 && /^[a-zA-Z ]{3,30}$/.test(value.trim())
           ? null
           : ERROR_INAVLID_NAME,
@@ -57,9 +56,7 @@ export default function SignupPage() {
       return;
     }
 
-    const state = base64Encode(
-      `${resp.validationId}#${values.email}`
-    ).replaceAll("=", "");
+    const state = base64Encode(`${resp.validationId}#${values.email}`).replaceAll("=", "");
 
     setLastClog({
       src: "signup",
@@ -91,13 +88,7 @@ export default function SignupPage() {
             size="md"
             {...form.getInputProps("email")}
           />
-          <Button
-            color="var(--color-teal)"
-            size="md"
-            type="submit"
-            loading={loading}
-            fullWidth
-          >
+          <Button color="var(--color-teal)" size="md" type="submit" loading={loading} fullWidth>
             {SIGNUP_PAGE_BUTTON_TEXT}
           </Button>
           <Divider label="OR" className="my-8" />

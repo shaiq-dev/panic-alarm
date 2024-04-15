@@ -1,6 +1,6 @@
 export const base64Encode = (input: string) => {
   const aBytes = new TextEncoder().encode(input);
-  const bin = Array.from(aBytes, (x) => String.fromCodePoint(x)).join("");
+  const bin = Array.from(aBytes, x => String.fromCodePoint(x)).join("");
   return btoa(bin);
 };
 
@@ -19,7 +19,5 @@ export const base64Decode = (input: string) => {
       throw new Error("Invalid base64 encoded string");
   }
   const bin = atob(encodedString);
-  return new TextDecoder().decode(
-    Uint8Array.from(bin, (x) => x.codePointAt(0) || 0)
-  );
+  return new TextDecoder().decode(Uint8Array.from(bin, x => x.codePointAt(0) || 0));
 };

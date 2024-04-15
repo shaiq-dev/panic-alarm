@@ -1,10 +1,9 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { Watch } from "@/app/dashboard/watch/_components/WatchList";
 import prisma from "@/lib/db";
 import { maskCode } from "@/utils/mask-code";
-import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 
 export const getWatches = async (): Promise<Watch[]> => {
   const watches = await prisma.watchAssociation.findMany({
@@ -28,7 +27,7 @@ export const getWatches = async (): Promise<Watch[]> => {
     },
   });
 
-  return watches.map((watch) => {
+  return watches.map(watch => {
     const {
       Watch: { code, model },
       ...rest
@@ -50,10 +49,7 @@ export interface FormStateAddWatch {
   };
 }
 
-export async function addWatch(
-  prevState: FormStateAddWatch,
-  data: { code: string; name: string }
-) {
+export async function addWatch(prevState: FormStateAddWatch, data: { code: string; name: string }) {
   // const code = formData.get("code") as string;
   // const name = formData.get("name") as string;
 

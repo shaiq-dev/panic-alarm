@@ -3,7 +3,6 @@
 import { createValidationContext } from "@/lib/auth/create-validation-context";
 import prisma from "@/lib/db";
 import { ActionResponse } from "@/types";
-import { cookies } from "next/headers";
 
 export type CreateAccountInput = {
   name: string;

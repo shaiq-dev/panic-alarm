@@ -1,9 +1,9 @@
 "use client";
 
-import Map, { Marker, NavigationControl } from "react-map-gl";
+import { Title, Text, Stack, Box } from "@mantine/core";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { Title, Text, Flex, Stack, Button, Select, Box } from "@mantine/core";
 import { FaLocationDot } from "react-icons/fa6";
+import Map, { Marker, NavigationControl } from "react-map-gl";
 
 export const Location = () => {
   const [lat, lng] = [12.972442, 77.580643];

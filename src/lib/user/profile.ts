@@ -1,3 +1,1 @@
-export const isOnboardingCompleted = () => {
-    
-}
+export const isOnboardingCompleted = () => {};

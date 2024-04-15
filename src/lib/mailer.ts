@@ -35,9 +35,7 @@ export class Mailer {
     // Dev mode wil print the mail to console
     if (this.devMode) {
       console.log(
-        `[pa/mailer] New email to ${to} for ${template} - ${JSON.stringify(
-          dynamicTemplateData
-        )}`
+        `[pa/mailer] New email to ${to} for ${template} - ${JSON.stringify(dynamicTemplateData)}`
       );
       return;
     }
@@ -60,10 +58,7 @@ export class Mailer {
 
 /* Export as singelton */
 const getMailerSingelton = () => {
-  return new Mailer(
-    process.env.SENDGRID_API_KEY as string,
-    process.env.NODE_ENV !== "production"
-  );
+  return new Mailer(process.env.SENDGRID_API_KEY as string, process.env.NODE_ENV !== "production");
 };
 
 declare global {

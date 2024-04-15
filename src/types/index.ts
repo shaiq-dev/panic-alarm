@@ -1,3 +1,5 @@
+export type Awaitable<T> = T | PromiseLike<T>;
+
 export type ActionResponse<T extends Record<string, unknown> = {}> =
   | { ok: false; error: string }
   | ({ ok: true } & T);

@@ -1,19 +1,10 @@
 import { hkdf } from "@panva/hkdf";
-import {
-  calculateJwkThumbprint,
-  base64url,
-  EncryptJWT,
-  JWTPayload,
-  jwtDecrypt,
-} from "jose";
+import { calculateJwkThumbprint, base64url, EncryptJWT, JWTPayload, jwtDecrypt } from "jose";
 
 const DEFAULT_MAX_AGE = 172800; // 2 days
 const DEFAULT_ENC_ALG = "A256CBC-HS512";
 
-const _getDerivedEncryptionKey = async (
-  ikm: string | Uint8Array,
-  salt: string | Uint8Array
-) => {
+const _getDerivedEncryptionKey = async (ikm: string | Uint8Array, salt: string | Uint8Array) => {
   // Key length for A256CBC-HS512 is 64
   return await hkdf("sha256", ikm, salt, `PanicAlarm Enc Key (${salt})`, 64);
 };
@@ -35,9 +26,7 @@ export interface JwtDecodeOptions {
 
 type Digest = "sha256" | "sha384" | "sha512";
 
-export const encode = async <Payload extends JWTPayload>(
-  options: JwtEncodeOptions<Payload>
-) => {
+export const encode = async <Payload extends JWTPayload>(options: JwtEncodeOptions<Payload>) => {
   const { maxAge = DEFAULT_MAX_AGE, salt, secret, payload = {} } = options;
   const encSecret = await _getDerivedEncryptionKey(secret, salt);
 

@@ -4,10 +4,8 @@ import { Button, Modal, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
-import { HiPlus } from "react-icons/hi";
-
-import { FormStateAddWatch, addWatch } from "../_actions";
 import { maskCode } from "@/utils/mask-code";
+import { HiPlus } from "react-icons/hi";
 
 export const AddWatch = () => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -18,11 +16,9 @@ export const AddWatch = () => {
       name: "",
     },
     validate: {
-      code: (value) =>
-        value.trim().length !== 12
-          ? "Watch code should be exact 12 characters"
-          : null,
-      name: (value) =>
+      code: value =>
+        value.trim().length !== 12 ? "Watch code should be exact 12 characters" : null,
+      name: value =>
         value.trim().length < 5
           ? "Watch name should be atleast 5 characters and may not start or end with space"
           : null,
@@ -48,12 +44,7 @@ export const AddWatch = () => {
 
   return (
     <>
-      <Button
-        color="var(--color-teal)"
-        leftSection={<HiPlus />}
-        size="xs"
-        onClick={open}
-      >
+      <Button color="var(--color-teal)" leftSection={<HiPlus />} size="xs" onClick={open}>
         Add New
       </Button>
 
@@ -70,10 +61,7 @@ export const AddWatch = () => {
         }}
         centered
       >
-        <form
-          className="change-mantine-input-focus"
-          onSubmit={form.onSubmit(handleSubmit)}
-        >
+        <form className="change-mantine-input-focus" onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
             label="Watch Code"
             placeholder="xxx-xxxx-xxx"

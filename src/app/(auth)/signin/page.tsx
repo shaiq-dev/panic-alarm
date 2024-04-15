@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button, Divider, TextInput } from "@mantine/core";
 import { isEmail, useForm } from "@mantine/form";
-
+import { useSessionStorage } from "@mantine/hooks";
+import { signin } from "@/app/_actions/signin";
 import {
   ERROR_INVALID_EMAIL,
   SESSION_LAST_CLOG,
@@ -15,10 +16,8 @@ import {
   SIGNIN_PAGE_DESCRIPTION,
   SIGNIN_PAGE_TITLE,
 } from "@/constants/app-strings";
-import { signin } from "@/app/_actions/signin";
-import { base64Encode } from "@/utils/base64";
-import { useSessionStorage } from "@mantine/hooks";
 import { SessionLastClog } from "@/types";
+import { base64Encode } from "@/utils/base64";
 
 export default function SigninPage() {
   const router = useRouter();
@@ -51,9 +50,7 @@ export default function SigninPage() {
       return;
     }
 
-    const state = base64Encode(
-      `${resp.validationId}#${values.email}`
-    ).replaceAll("=", "");
+    const state = base64Encode(`${resp.validationId}#${values.email}`).replaceAll("=", "");
 
     setLastClog({
       src: "signin",
@@ -79,13 +76,7 @@ export default function SigninPage() {
             size="md"
             {...form.getInputProps("email")}
           />
-          <Button
-            color="var(--color-teal)"
-            size="md"
-            type="submit"
-            loading={loading}
-            fullWidth
-          >
+          <Button color="var(--color-teal)" size="md" type="submit" loading={loading} fullWidth>
             {SIGNIN_PAGE_BUTTON_TEXT}
           </Button>
           <Divider label="OR" className="my-8" />

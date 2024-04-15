@@ -2,9 +2,8 @@
 
 import { Drawer, ScrollArea } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IoWatchOutline } from "react-icons/io5";
-
 import { Badge } from "@/components/Badge";
+import { IoWatchOutline } from "react-icons/io5";
 
 export interface Watch {
   name: string;

@@ -17,9 +17,7 @@ export const ValidateOtp = forwardRef<HTMLInputElement, Props>((props, ref) => {
 
   const handleComplete = (value: string) => {
     if (formRef.current) {
-      formRef.current.dispatchEvent(
-        new Event("submit", { bubbles: true, cancelable: true })
-      );
+      formRef.current.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
     }
   };
 
@@ -31,9 +29,7 @@ export const ValidateOtp = forwardRef<HTMLInputElement, Props>((props, ref) => {
 
   return (
     <>
-      <h1 className="text-[56px] font-medium pb-2">
-        Check your email for a code
-      </h1>
+      <h1 className="text-[56px] font-medium pb-2">Check your email for a code</h1>
       <p className="font-light mb-8">{description}</p>
       <div className="w-[400px]">
         <form

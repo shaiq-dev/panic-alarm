@@ -1,17 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Loader, Menu } from "@mantine/core";
-import { IconType } from "react-icons/lib";
-import { IoHardwareChipOutline, IoStatsChartOutline } from "react-icons/io5";
+import Logo from "@/assets/logo.svg";
 import { CgUserlane } from "react-icons/cg";
 import { GoGear } from "react-icons/go";
+import { IoHardwareChipOutline, IoStatsChartOutline } from "react-icons/io5";
+import { IconType } from "react-icons/lib";
 import { MdOutlineManageAccounts } from "react-icons/md";
 import { RxExternalLink } from "react-icons/rx";
-
-import Logo from "@/assets/logo.svg";
-import { useState } from "react";
 
 const NAV_LINKS: [string, string, IconType][] = [
   ["Status", "/dashboard", IoStatsChartOutline],
@@ -57,18 +56,14 @@ export const Sidebar = (props: SidebarProps) => {
             <Menu.Dropdown>
               <Menu.Label className="flex flex-col text-sm">
                 <span className="text-[--color-text] truncate">Shaiq Kar</span>
-                <span className="text-dimmed font-light truncate">
-                  shaiqkar@gmail.com
-                </span>
+                <span className="text-dimmed font-light truncate">shaiqkar@gmail.com</span>
               </Menu.Label>
               <Menu.Item rightSection={<MdOutlineManageAccounts size={18} />}>
                 Account Settings
               </Menu.Item>
               <Menu.Item onClick={handleSignout}>Signout</Menu.Item>
               <Menu.Divider />
-              <Menu.Item rightSection={<RxExternalLink size={18} />}>
-                Homepage
-              </Menu.Item>
+              <Menu.Item rightSection={<RxExternalLink size={18} />}>Homepage</Menu.Item>
               <Menu.Item>Usage Guide</Menu.Item>
             </Menu.Dropdown>
           </Menu>

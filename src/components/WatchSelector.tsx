@@ -1,8 +1,8 @@
 "use client";
 
 import { Flex, Stack, Title, Text, Menu } from "@mantine/core";
-import { IoWatchOutline } from "react-icons/io5";
 import { faker } from "@faker-js/faker";
+import { IoWatchOutline } from "react-icons/io5";
 
 const fakeWatch = () => ({
   name: `${faker.person.firstName()}'s Watch`,
@@ -40,9 +40,7 @@ export const WatchSelector = () => {
             <Flex align="center">
               <div
                 className="watch-logo"
-                style={
-                  { "--watch-tag-color": watch.tag } as React.CSSProperties
-                }
+                style={{ "--watch-tag-color": watch.tag } as React.CSSProperties}
               >
                 <IoWatchOutline size={20} strokeWidth={4} />
               </div>

@@ -1,4 +1,4 @@
-import { Title, Text, Flex, Stack, Button, Select } from "@mantine/core";
+import { Title, Text, Flex, Stack, Select } from "@mantine/core";
 import { AreaChart } from "@mantine/charts";
 
 export const data = [

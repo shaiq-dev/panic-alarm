@@ -1,7 +1,6 @@
-import { cookies } from "next/headers";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import { cookies } from "next/headers";
 import { JWTPayload } from "jose";
-
 import { decode, encode } from "./jwt";
 import { isUserRegistered } from "./utils";
 
@@ -70,10 +69,7 @@ export const isSessionValid = async (cookie: RequestCookie | undefined) => {
       return false;
     }
 
-    if (
-      !payload.identifier ||
-      (!payload.identifier as unknown as string) === "email"
-    ) {
+    if (!payload.identifier || (!payload.identifier as unknown as string) === "email") {
       return false;
     }
 
@@ -81,9 +77,7 @@ export const isSessionValid = async (cookie: RequestCookie | undefined) => {
       return false;
     }
 
-    const isUser = await isUserRegistered(
-      payload.identity as unknown as string
-    );
+    const isUser = await isUserRegistered(payload.identity as unknown as string);
 
     return isUser;
   } catch (error) {

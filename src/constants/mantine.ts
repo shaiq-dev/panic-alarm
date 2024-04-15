@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, MenuDropdown, type MantineThemeOverride } from "@mantine/core";
+import { Menu, type MantineThemeOverride } from "@mantine/core";
 import { Notification } from "@mantine/core";
 
 export const mantineThemeOverride: MantineThemeOverride = {
