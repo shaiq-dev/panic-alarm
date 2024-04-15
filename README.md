@@ -1,37 +1,36 @@
-# **PanicAlarm**<br>
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-IOT based smart watch to monitor unusuall activity of heart, alert the care takers when the person **(differently abled, elders, childern)** wearing the watch are in danger or in need of help.<br />
-There can be any sudden situation of panic. It could be an intruder entering our house or bad health status. Situations can be many for panicking and may vary from person to person. During these situations we employ the use of **_Panic Alarm Watch_**, which can automatically or just by pressing a button alert our well-wishers.
-<br />
-<br />
+## Getting Started
 
-## _Table of Contents_
+First, run the development server:
 
-- [User Guide](#user-guide)
-  - [Registration & Access Token](#registration-&-access-token)
-  - [Watch Setup](#watch-setup)
-- [Developers](#developers)
-  - [Watch Architecture](#watch-architecture)
-  - [Watch Working Model](#watch-model)
-  - [Dashboard](#dashboard)
-  - [Dashboard API](#dashboard-api)
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## User Guide
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-To start using the watch the user must register on the [PanicAlarm](#https://panicalarm.vercel.app) dashboard, obtain a user access token and use it with the watch.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-### **Registration & Access Token**
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-The registration is very simple, visit [PanicAlarm](#https://panicalarm.vercel.app) dashboard and fill all your details correctly.<br />
+## Learn More
 
-![User Registration](https://res.cloudinary.com/shaiqkar/image/upload/v1622921885/Github/Screenshot_from_2021-06-06_01-04-26_rrhv9d.png)
+To learn more about Next.js, take a look at the following resources:
 
-After registration you will be redirected to login. Upon successfully logging in you can see your dashboard
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-![User Dashboard](https://res.cloudinary.com/shaiqkar/image/upload/v1622921885/Github/Screenshot_from_2021-06-06_01-05-48_ntp0p0.png)
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-On the left side is your unique 24 digit Alert Id _(click on it to copy)_. All the alerts generated from the watch will appear on the right side. The dashboard aggregates the alerts of similar type to a set timeout. For example if an automatic alert was sent at 10:00 AM, then all the upcoming automatic alerts till 11:00 AM (Default Aggregation TimeOut is 1 hour) will be aggregated with the first generated alert.
+## Deploy on Vercel
 
-![Alerts](https://res.cloudinary.com/shaiqkar/image/upload/v1622921886/Github/Screenshot_from_2021-06-06_01-06-23_optniv.png)
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## **Watch Setup**
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
