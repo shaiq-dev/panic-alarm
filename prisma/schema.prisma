@@ -1,75 +1,77 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider  = "postgresql"
-    url       = env("DATABASE_URL")
-    directUrl = env("DIRECT_DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 
 model User {
-    id                 String             @id @default(cuid())
-    name               String
-    email              String             @unique
-    initiateOnboarding Boolean            @default(true)
-    createdAt          DateTime           @default(now())
-    updatedAt          DateTime           @updatedAt
-    WatchAssociation   WatchAssociation[]
+  id                 String             @id @default(cuid())
+  name               String
+  email              String             @unique
+  initiateOnboarding Boolean            @default(true)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  WatchAssociation   WatchAssociation[]
 }
 
 model Otp {
-    id                Int      @id @default(autoincrement())
-    validationId      String   @unique @default(uuid())
-    validationPayload String
-    value             String
-    used              Boolean  @default(false)
-    resends           Int      @default(0)
-    createdAt         DateTime @default(now())
-    updatedAt         DateTime @updatedAt
+  id                Int      @id @default(autoincrement())
+  validationId      String   @unique @default(uuid())
+  validationPayload String
+  value             String
+  used              Boolean  @default(false)
+  resends           Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 }
 
 model Watch {
-    id               String             @id @default(cuid())
-    code             String
-    model            String
-    active           Boolean            @default(false)
-    createdAt        DateTime           @default(now())
-    WatchAssociation WatchAssociation[]
+  id               String             @id @default(cuid())
+  code             String
+  model            String
+  active           Boolean            @default(false)
+  createdAt        DateTime           @default(now())
+  WatchAssociation WatchAssociation[]
 }
 
 model WatchAssociation {
-    id        Int       @id @default(autoincrement())
-    userId    String
-    watchId   String
-    name      String
-    tag       String
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
-    removedAt DateTime?
+  id            Int       @id @default(autoincrement())
+  userId        String
+  watchId       String
+  name          String
+  colorSwatchId Int       @default(1)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  removedAt     DateTime?
 
-    User  User  @relation(fields: [userId], references: [id])
-    Watch Watch @relation(fields: [watchId], references: [id])
+  User        User        @relation(fields: [userId], references: [id])
+  Watch       Watch       @relation(fields: [watchId], references: [id])
+  ColorSwatch ColorSwatch @relation(fields: [colorSwatchId], references: [id])
 }
 
 enum AlertType {
-    AUTOMATIC
-    ENTRY
+  AUTOMATIC
+  ENTRY
 }
 
 model Alert {
-    id         String    @id @default(cuid())
-    type       AlertType
-    pulse      Int
-    latitude   Float?
-    longitude  Float?
-    network_ip String?
-    createdAt  DateTime  @default(now())
+  id         String    @id @default(cuid())
+  type       AlertType
+  pulse      Int
+  latitude   Float?
+  longitude  Float?
+  network_ip String?
+  createdAt  DateTime  @default(now())
 }
 
 model ColorSwatch {
-    id     Int     @id @default(autoincrement())
-    name   String
-    value  String
-    active Boolean @default(true)
+  id               Int                @id @default(autoincrement())
+  name             String
+  value            String
+  active           Boolean            @default(true)
+  WatchAssociation WatchAssociation[]
 }

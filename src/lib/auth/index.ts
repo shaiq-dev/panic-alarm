@@ -1,5 +1,8 @@
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { COOKIE_SECURE_AUTH_TOKEN } from "@/constants/app-strings";
+import prisma from "@/lib/db";
 import { JWTPayload } from "jose";
 import { decode, encode } from "./jwt";
 import { isUserRegistered } from "./utils";
@@ -23,8 +26,8 @@ export const setAuthorizationCookie = async <P extends JWTPayload>(
   options: AuthorizationOptions<P>
 ) => {
   const {
-    cookieName = "__sat",
-    salt,
+    cookieName = COOKIE_SECURE_AUTH_TOKEN,
+    salt = cookieName,
     expiry = 2880,
     secret = process.env.JWT_SECRET,
     payload,
@@ -38,7 +41,7 @@ export const setAuthorizationCookie = async <P extends JWTPayload>(
   const expiryInMilliSeconds = expiryInSeconds * 1000;
 
   const token = await encode({
-    salt: salt ? salt : cookieName,
+    salt,
     secret,
     maxAge: expiryInSeconds,
     payload: payload,
@@ -53,10 +56,14 @@ export const setAuthorizationCookie = async <P extends JWTPayload>(
   });
 };
 
-export const isSessionValid = async (cookie: RequestCookie | undefined) => {
+export type IsSessionValidResponse = [false, null] | [true, string];
+
+export const isSessionValid = async (
+  cookie: RequestCookie | undefined
+): Promise<IsSessionValidResponse> => {
   try {
     if (!cookie || !cookie.name || !cookie.value) {
-      return false;
+      return [false, null];
     }
 
     const payload = await decode({
@@ -66,25 +73,52 @@ export const isSessionValid = async (cookie: RequestCookie | undefined) => {
     });
 
     if (!payload.exp || payload.exp < Date.now() / 1000) {
-      return false;
+      return [false, null];
     }
 
     if (!payload.identifier || (!payload.identifier as unknown as string) === "email") {
-      return false;
+      return [false, null];
     }
 
     if (!payload.identity) {
-      return false;
+      return [false, null];
     }
 
     const isUser = await isUserRegistered(payload.identity as unknown as string);
 
-    return isUser;
-  } catch (error) {
-    console.log(error);
+    if (isUser) {
+      return [true, payload.identifier as unknown as string];
+    }
+  } catch (error) {}
+
+  return [false, null];
+};
+
+/* Returns currently logged in user or redirects to signin */
+export const getUser = async () => {
+  const [validSession, userId] = await isSessionValid(cookies().get(COOKIE_SECURE_AUTH_TOKEN));
+
+  if (!validSession) {
+    redirect("/signin");
   }
 
-  return false;
+  const user = await prisma.user.findFirst({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+    },
+    where: {
+      id: userId,
+    },
+  });
+
+  // This case will never occur
+  if (!user) {
+    redirect("/signin");
+  }
+
+  return user;
 };
 
 export * from "./create-validation-context";

@@ -21,3 +21,6 @@ export const ERROR_INVALID_EMAIL = "Sorry, but that email address is invalid";
 
 /* Session Storage keys */
 export const SESSION_LAST_CLOG = "pa_auto_last_clog";
+
+/* COOKIES */
+export const COOKIE_SECURE_AUTH_TOKEN = "__sat";
