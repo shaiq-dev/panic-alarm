@@ -121,7 +121,7 @@ export const getUser = async () => {
   return user;
 };
 
-export * from "./create-validation-context";
+export * from "./validation-context";
 export * from "./jwt";
 export * from "./utils";
 export * from "./verify-validation-context";

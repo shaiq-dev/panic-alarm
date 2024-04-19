@@ -1,6 +1,6 @@
 "use server";
 
-import { createValidationContext } from "@/lib/auth/create-validation-context";
+import { createValidationContext } from "@/lib/auth";
 import { isUserRegistered } from "@/lib/auth/utils";
 import { ActionResponse } from "@/types";
 

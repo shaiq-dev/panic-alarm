@@ -1,6 +1,6 @@
 "use server";
 
-import { createValidationContext } from "@/lib/auth/create-validation-context";
+import { createValidationContext } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { ActionResponse } from "@/types";
 
