@@ -1,7 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { isUserRegistered, setAuthorizationCookie, verifyValidationContext } from "@/lib/auth";
+import { setAuthorizationCookie, verifyValidationContext } from "@/lib/auth";
+import prisma from "@/lib/db";
 import { type ActionResponse } from "@/types";
 import { type SigninInput } from "./signin";
 
@@ -28,8 +29,13 @@ export const verfiySignin = async (input: VerifySigninInput): Promise<ActionResp
     };
   }
 
-  const isUser = await isUserRegistered(validationPayload.email);
-  if (!isUser) {
+  const user = await prisma.user.findFirst({
+    where: {
+      email: validationPayload.email,
+    },
+  });
+
+  if (!user) {
     return {
       ok: false,
       error: "invalid_request",
@@ -43,5 +49,9 @@ export const verfiySignin = async (input: VerifySigninInput): Promise<ActionResp
     },
   });
 
-  redirect("/dashboard");
+  if (user.initiateOnboarding) {
+    redirect("/onboarding");
+  }
+
+  if (user) redirect("/dashboard");
 };

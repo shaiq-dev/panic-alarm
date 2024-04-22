@@ -14,10 +14,23 @@ export const CONFIRM_PAGE_DESCRIPTION =
 export const ONBOARDING_PAGE_TITLE = "Add your first watch";
 export const ONBOARDING_PAGE_DESCRIPTION =
   "A closer look at your loved ones. The more informed you are, the more empowered you are to take action";
+export const DASHBOARD_PAGE_ACTIVITY_HISTORY_TITLE = "Activity History";
+export const DASHBOARD_PAGE_ACTIVITY_HISTORY_DESCRIPTION =
+  "Alerts are aggregated in 1 hour intervals";
+export const WATCH_PAGE_TITLE = "Your Watche’s";
+export const WATCH_PAGE_DESCRIPTION =
+  "All your watche’s at one place. You can check their status or modify them. A watch can be added to only one account at a time.";
 
-/* ERROS */
+export const NOTIFICATION_WATCH_ADDED = "Watch {{code}} added successfully";
+
+/* ERRORS */
 export const ERROR_INAVLID_NAME = "Enter a valid name with 3 - 30 characters";
 export const ERROR_INVALID_EMAIL = "Sorry, but that email address is invalid";
+export const ERROR_INVALID_WATCH_CODE = "Watch code should be exact 12 characters";
+export const ERROR_INVALID_WATCH_NAME =
+  "Watch name should be at least 3 characters and may not start or end with space";
+export const ERROR_UNKNOWN_COLOR_SWATCH = "Invalid color selected";
+export const ERROR_WATCH_ACTIVE = "Watch code is invalid or watch is already active";
 
 /* Session Storage keys */
 export const SESSION_LAST_CLOG = "pa_auto_last_clog";

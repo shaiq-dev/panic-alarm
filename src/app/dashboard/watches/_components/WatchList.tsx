@@ -2,33 +2,21 @@
 
 import { Drawer, ScrollArea } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { type Watch as IWatch } from "@/app/_actions/fetch/get-watches";
 import { Badge } from "@/components/Badge";
 import { IoWatchOutline } from "react-icons/io5";
 
-export interface Watch {
-  name: string;
-  watchId: string;
-  code: string;
-  tag: string;
-  model: string;
-  status: "ONLINE" | "OFFLINE";
-  createdAt: Date;
-}
-
-const Watch = ({ name, code, tag, model, status }: Watch) => {
+const Watch = ({ name, code, colorSwatch }: IWatch) => {
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <>
-      <div
-        className="flex items-center border-b border-solid border-[--color-border] py-4 cursor-pointer"
-        onClick={open}
-      >
-        <IoWatchOutline size={24} color={tag} />
+      <div className="flex-ic border-b def-border py-4 cursor-pointer" onClick={open}>
+        <IoWatchOutline size={24} color={colorSwatch.value} />
         <div className="flex flex-col ms-2.5">
           <div className="text-sm font-medium">{name}</div>
           <div className="text-xs text-dimmed">
-            <Badge>{status}</Badge>
+            <Badge>{"ONLINE"}</Badge>
             <span className="ms-1.5">{code}</span>
           </div>
         </div>
@@ -46,7 +34,7 @@ const Watch = ({ name, code, tag, model, status }: Watch) => {
 };
 
 export interface Props {
-  watches: Watch[];
+  watches: IWatch[];
 }
 
 export const WatchList = ({ watches }: Props) => {

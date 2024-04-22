@@ -1,8 +1,8 @@
+import { Otp } from "@prisma/client/edge";
 import cypher from "@/lib/cypher";
 import prisma from "@/lib/db";
 import mailer, { Templates } from "@/lib/mailer";
 import { OtpCharacterSet, generateOtp } from "@/utils/generate-otp";
-import { Otp } from "@prisma/client/edge";
 
 export type CreateValidationContextOptions<P> = {
   validationEmail: string;

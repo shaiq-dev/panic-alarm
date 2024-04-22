@@ -1,7 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getUser } from "@/lib/auth";
+import {
+  ERROR_INVALID_WATCH_CODE,
+  ERROR_INVALID_WATCH_NAME,
+  ERROR_UNKNOWN_COLOR_SWATCH,
+  ERROR_WATCH_ACTIVE,
+} from "@/constants/app-strings";
+import { getUserGuarded } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { ActionResponse } from "@/types";
 
@@ -14,19 +20,19 @@ export interface AddWatchInput {
 export const addWatch = async (input: AddWatchInput): Promise<ActionResponse> => {
   const { code, name, colorSwatchId } = input;
 
-  const user = await getUser();
+  const user = await getUserGuarded();
 
   if (!code || code.trim().length < 12) {
     return {
       ok: false,
-      error: "Watch code should be exact 12 characters",
+      error: ERROR_INVALID_WATCH_CODE,
     };
   }
 
   if (!name || name.trim().length < 3) {
     return {
       ok: false,
-      error: "Watch name should be at least 3 characters and may not start or end with space",
+      error: ERROR_INVALID_WATCH_NAME,
     };
   }
 
@@ -42,7 +48,7 @@ export const addWatch = async (input: AddWatchInput): Promise<ActionResponse> =>
   if (!colorSwatch) {
     return {
       ok: false,
-      error: "Select a valid color",
+      error: ERROR_UNKNOWN_COLOR_SWATCH,
     };
   }
 
@@ -57,7 +63,7 @@ export const addWatch = async (input: AddWatchInput): Promise<ActionResponse> =>
   if (!watch) {
     return {
       ok: false,
-      error: "Watch code is invalid or watch is already active",
+      error: ERROR_WATCH_ACTIVE,
     };
   }
 
@@ -76,6 +82,16 @@ export const addWatch = async (input: AddWatchInput): Promise<ActionResponse> =>
     },
     data: {
       active: true,
+    },
+  });
+
+  // Disable onbaording if active
+  await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      initiateOnboarding: false,
     },
   });
 

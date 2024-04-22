@@ -25,12 +25,13 @@ body {
 :root {
   --color-white: #fff;
   --color-border: #e5eaf2;
-  --color-neutral-container: #fafafa;
+  --color-neutral-container: #f2f3f6;
   --color-dimmed: #868e96;
   --color-text: #0f172a;
   --color-green: #2eb67d;
   --color-red: #e01d5a;
   --color-teal: #1264a3;
+  --color-yellow: #ecb12f;
   --sidebar-icon-color: #80868b;
   --sidebar-width: 64px;
 
@@ -47,44 +48,66 @@ body {
   font-weight: 300;
 }
 
-.center {
-  display: grid;
-  place-items: center;
-}
-
-.d-flex {
-  display: flex;
-  flex-direction: row;
-
-  &.column {
-    flex-direction: column;
-  }
-}
-
-.flex-1 {
-  flex: 1;
-}
-
-.h-full {
-  height: 100%;
-}
-
 a {
   color: inherit;
   text-decoration: none;
 }
 
-a.link {
+.link {
   color: var(--color-teal);
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
 
-a.link:hover {
-  text-decoration: underline;
-  cursor: pointer;
+.center {
+  display: grid;
+  place-items: center;
 }
 
-.bold {
-  font-weight: 500;
+.heading {
+  @apply text-xl font-medium;
+}
+
+.dot-seperator {
+  @apply block size-[3px] rounded-full bg-[--color-dimmed];
+}
+
+.def-border {
+  @apply border-solid border-[--color-border];
+}
+
+.flex-ic {
+  @apply flex items-center;
+}
+
+.marker-pulse {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -15px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(255, 0, 0, 0.5);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateX(-50%) scale(0.4);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scale(0.4);
+    opacity: 0.7;
+  }
 }
 
 .watch {
@@ -113,6 +136,11 @@ a.link:hover {
   margin-right: calc(var(--default-gap) * 0.5);
 }
 
+.text-dimmed {
+  color: var(--color-dimmed);
+}
+
+/* Mantine override */
 .disable-mantine-input-focus input:focus-within {
   outline: none;
   border-color: var(--mantine-color-gray-4);
@@ -131,32 +159,30 @@ a.link:hover {
   }
 }
 
-.mantine-Modal-title {
-  font-weight: 500;
-}
+.mantine {
+  &-Modal-title {
+    font-weight: 500;
+  }
 
-.text-dimmed {
-  color: var(--color-dimmed);
-}
-
-/* Mantine override */
-.mantine-Notifications-root {
-  width: unset;
-}
-
-.pa-notification-root {
-  background: #323232;
-
-  &::before {
-    display: none;
+  &-Notifications-root {
+    width: unset;
   }
 }
 
-.pa-notification-description {
-  color: var(--color-white);
-}
-
+/* Mantine overrides - styles api */
 .pa {
+  &-notification-root {
+    background: #323232;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  &-notification-description {
+    color: var(--color-white);
+  }
+
   &-menu {
     &-dropdown {
       padding-inline: 0;
