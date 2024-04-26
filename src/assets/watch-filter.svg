@@ -1,0 +1,24 @@
+<svg width="0" height="0" style="display: block;">
+    <defs>
+        <filter id="noise">
+            <feTurbulence
+            type="fractalNoise"
+            baseFrequency="19.5"
+            numOctaves="10"
+            result="turbulence"
+            />
+            <feComposite operator="in" in="turbulence" in2="SourceAlpha" result="composite"/>
+            <feColorMatrix in="composite" type="luminanceToAlpha" />
+            <feBlend in="SourceGraphic" in2="composite" mode="color-burn" />
+        </filter>
+        <mask id="shape-mask">
+            <linearGradient id="fade-gradient" gradientTransform="rotate(0)">
+            <stop offset="0%" stop-color="black" stop-opacity="0.6" />
+            <stop offset="65%" stop-color="white" stop-opacity="0.9" />
+            <stop offset="75%" stop-color="white" stop-opacity="1" />
+            </linearGradient>
+            <use href="#wpanel" fill="url('#fade-gradient')"  />
+        </mask>
+        <rect id="wpanel"  width="53.71" height="63" rx="15" ry="15" />
+    </defs>
+</svg>
