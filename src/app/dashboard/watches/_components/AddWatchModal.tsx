@@ -22,9 +22,11 @@ export const AddWatchModal = (props: Props) => {
 
   return (
     <>
-      <Button color="var(--color-teal)" leftSection={<HiPlus />} size="xs" onClick={open}>
-        Add New
-      </Button>
+      <div className="ms-20">
+        <Button color="var(--color-teal)" leftSection={<HiPlus />} size="sm" onClick={open}>
+          Add New
+        </Button>
+      </div>
 
       <Modal
         opened={opened}

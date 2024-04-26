@@ -2,20 +2,31 @@
 
 import { Drawer, ScrollArea } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { type Watch as IWatch } from "@/app/_actions/fetch/get-watches";
+import { type Watch } from "@/app/_actions/fetch/get-watches";
 import { Badge } from "@/components/Badge";
+import classNames from "classnames";
 import { IoWatchOutline } from "react-icons/io5";
 
-const Watch = ({ name, code, colorSwatch }: IWatch) => {
+interface WatchRowProps {
+  watch: Watch;
+  cn: string;
+}
+
+const WatchRow = (props: WatchRowProps) => {
+  const {
+    watch: { name, code, colorSwatch },
+    cn,
+  } = props;
+
   const [opened, { open, close }] = useDisclosure(false);
 
   return (
     <>
-      <div className="flex-ic border-b def-border py-4 cursor-pointer" onClick={open}>
+      <div className={cn} onClick={open}>
         <IoWatchOutline size={24} color={colorSwatch.value} />
         <div className="flex flex-col ms-2.5">
-          <div className="text-sm font-medium">{name}</div>
-          <div className="text-xs text-dimmed">
+          <div className="text-base font-medium">{name}</div>
+          <div className="flex-ic text-sm text-dimmed">
             <Badge>{"ONLINE"}</Badge>
             <span className="ms-1.5">{code}</span>
           </div>
@@ -33,16 +44,21 @@ const Watch = ({ name, code, colorSwatch }: IWatch) => {
   );
 };
 
-export interface Props {
-  watches: IWatch[];
+export interface WatchListProps {
+  watches: Watch[];
 }
 
-export const WatchList = ({ watches }: Props) => {
+export const WatchList = ({ watches }: WatchListProps) => {
   return (
     <ScrollArea scrollbarSize={4} type="scroll" scrollHideDelay={0} h={400}>
-      {watches.map((watch, idx) => (
-        <Watch key={idx} {...watch} />
-      ))}
+      {watches.map((watch, idx) => {
+        const cn = classNames("flex-ic border def-border p-4 cursor-pointer", {
+          "!border-t-0": idx !== 0,
+          "rounded-t": idx === 0,
+          "rounded-b": idx === watches.length - 1,
+        });
+        return <WatchRow key={idx} watch={watch} cn={cn} />;
+      })}
     </ScrollArea>
   );
 };

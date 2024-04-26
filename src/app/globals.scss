@@ -71,6 +71,10 @@ a {
   @apply text-xl font-medium;
 }
 
+.heading-xl {
+  @apply text-2xl font-medium;
+}
+
 .dot-seperator {
   @apply block size-[3px] rounded-full bg-[--color-dimmed];
 }
