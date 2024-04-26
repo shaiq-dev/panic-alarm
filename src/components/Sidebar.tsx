@@ -27,13 +27,13 @@ const NAV_LINKS: [string, string, IconType, IconType][] = [
 ];
 
 export interface SidebarProps {
-  onSignout: () => Promise<void>;
+  signoutHandler: () => Promise<void>;
   userName: string;
   userEmail: string;
 }
 
 export const Sidebar = (props: SidebarProps) => {
-  const { onSignout, userName, userEmail } = props;
+  const { signoutHandler, userName, userEmail } = props;
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   const ROOT_SEGMENT = "/dashboard";
@@ -41,7 +41,7 @@ export const Sidebar = (props: SidebarProps) => {
 
   const handleSignout = async () => {
     setIsSigningOut(true);
-    await onSignout();
+    await signoutHandler();
   };
 
   return (

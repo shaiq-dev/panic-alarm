@@ -1,4 +1,4 @@
-import { Container, Title } from "@mantine/core";
+import { Container } from "@mantine/core";
 import { addWatch } from "@/app/_actions/add-watch";
 import { getColorSwatches } from "@/app/_actions/fetch/get-color-swatches";
 import { getWatches } from "@/app/_actions/fetch/get-watches";
@@ -12,16 +12,14 @@ export default async function WatchesPage() {
 
   return (
     <Container size="sm">
-      <div className="flex flex-col h-full pt-20">
-        <Title order={2} fw={500}>
-          {WATCH_PAGE_TITLE}
-        </Title>
-        <div className="flex-ic space-between pb-6">
-          <p className="text-sm text-dimmed pe-16">{WATCH_PAGE_DESCRIPTION}</p>
-          <div className="block">
-            <AddWatchModal colorSwatches={colors} action={addWatch} />
-          </div>
+      <div className="flex justify-between pt-20 pb-10">
+        <div>
+          <h2 className="heading-xl">{WATCH_PAGE_TITLE}</h2>
+          <p className="text-sm text-dimmed">{WATCH_PAGE_DESCRIPTION}</p>
         </div>
+        <AddWatchModal colorSwatches={colors} action={addWatch} />
+      </div>
+      <div className="flex flex-col">
         <WatchList watches={watches} />
       </div>
     </Container>

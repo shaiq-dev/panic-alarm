@@ -97,7 +97,9 @@ export const getSession = async (
     if (user) {
       return [true, user];
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 
   return [false, null];
 };

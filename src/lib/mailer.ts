@@ -1,6 +1,6 @@
 import mail, { MailService } from "@sendgrid/mail";
 
-export type Templates = "signin" | "signup";
+export type Templates = "signin" | "signup" | "addNotifier";
 
 export type SendData = {
   to: string;
@@ -24,6 +24,7 @@ export class Mailer {
     this.templates = {
       signin: process.env.SENDGRID_TEMPLATE_SIGNIN as string,
       signup: process.env.SENDGRID_TEMPLATE_SIGNUP as string,
+      addNotifier: process.env.SENDGRID_TEMPLATE_ADD_NOTIFIER as string,
     };
 
     this.from = process.env.SENDGRID_FROM_ADDRESS as string;

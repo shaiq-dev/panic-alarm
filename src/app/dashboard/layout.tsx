@@ -12,7 +12,7 @@ const DashboardLayout = async ({
   return (
     <>
       <div className="flex h-full">
-        <Sidebar onSignout={signout} userName={user.name} userEmail={user.email} />
+        <Sidebar signoutHandler={signout} userName={user.name} userEmail={user.email} />
         <main className="flex flex-1 max-h-screen">{children}</main>
       </div>
     </>

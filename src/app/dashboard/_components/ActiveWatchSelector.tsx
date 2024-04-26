@@ -10,6 +10,7 @@ import { IoWatchOutline } from "react-icons/io5";
 
 export interface Props {
   watches: Watch[];
+  useLayout?: "dashboard" | "settings";
 }
 
 export const SingleWatch = ({ watch, active = false }: { watch: Watch; active?: boolean }) => {
@@ -45,11 +46,13 @@ export const SingleWatch = ({ watch, active = false }: { watch: Watch; active?: 
 };
 
 export const ActiveWatchSelector = (props: Props) => {
-  const { watches } = props;
+  const { watches, useLayout = "dashboard" } = props;
   const { activeWatchId, setActiveWatchId } = useContext(ActiveWatchContext);
 
   const [activeWatch, setActiveWatch] = useState(watches[0]);
   const availableWatches = watches.filter(watch => watch.id !== activeWatch.id);
+
+  const isDashboardLayout = useLayout === "dashboard";
 
   useEffect(() => {
     if (activeWatchId && activeWatchId !== "") {
@@ -62,7 +65,7 @@ export const ActiveWatchSelector = (props: Props) => {
       position="bottom-start"
       offset={-50}
       classNames={{
-        dropdown: "!pt-0 -ml-[11px] -mt-[2px]",
+        dropdown: isDashboardLayout ? "!pt-0 -ml-[11px] -mt-[2px]" : "!pt-0 -ml-[11px] -mt-[6px]",
       }}
       shadow="sm"
     >
