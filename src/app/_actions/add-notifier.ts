@@ -3,7 +3,6 @@
 import { ERROR_INVALID_EMAIL } from "@/constants/app-strings";
 import { getUserGuarded } from "@/lib/auth";
 import prisma from "@/lib/db";
-import { error } from "console";
 import { randomUUID } from "crypto";
 import cypher from "../../lib/cypher";
 import mailer from "../../lib/mailer";

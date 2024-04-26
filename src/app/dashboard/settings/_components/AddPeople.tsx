@@ -1,10 +1,8 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
-import { Button, Modal } from "@mantine/core";
+import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import NoPeopleAddedIcon from "@/assets/people.svg";
 import classNames from "classnames";
 
 const People = [
@@ -44,7 +42,7 @@ export const AddPeople = () => {
             });
 
             return (
-              <div className={cn}>
+              <div className={cn} key={idx}>
                 <div className="text-base font-medium leading-none">
                   {person.name}
                   <div className="text-sm text-dimmed font-light">
