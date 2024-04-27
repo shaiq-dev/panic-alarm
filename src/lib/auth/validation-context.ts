@@ -1,12 +1,12 @@
 import { Otp } from "@prisma/client/edge";
 import cypher from "@/lib/cypher";
 import prisma from "@/lib/db";
-import mailer, { Templates } from "@/lib/mailer";
+import mailer, { type Template } from "@/lib/mailer";
 import { OtpCharacterSet, generateOtp } from "@/utils/generate-otp";
 
 export type CreateValidationContextOptions<P> = {
   validationEmail: string;
-  validationEmailTemplate: Templates;
+  validationEmailTemplate: Template;
   validationPayload: P;
   otpLength?: number;
   otpCharSet?: OtpCharacterSet;
@@ -49,8 +49,7 @@ export const createValidationContext = async <P = unknown>(
     },
   });
 
-  // No need to await the email delivery
-  mailer.send(validationEmailTemplate, {
+  await mailer.send(validationEmailTemplate, {
     to: validationEmail,
     dynamicTemplateData: { otp },
   });

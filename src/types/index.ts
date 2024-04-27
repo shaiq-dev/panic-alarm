@@ -1,5 +1,3 @@
-export type Awaitable<T> = T | PromiseLike<T>;
-
 export type ActionResponse<T extends Record<string, unknown> = {}> =
   | { ok: false; error: string }
   | ({ ok: true } & T);
@@ -9,4 +7,8 @@ export type SessionLastClog = {
   src: "signin" | "signup" | (string & {});
   event: string;
   domains: string[];
+};
+
+export type StringRecord<T extends string> = {
+  [K in T]: string;
 };
