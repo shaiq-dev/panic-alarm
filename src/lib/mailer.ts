@@ -1,3 +1,4 @@
+import logger from "@/logging";
 import { StringRecord } from "@/types";
 import mail, { MailService } from "@sendgrid/mail";
 
@@ -42,8 +43,8 @@ export class Mailer {
 
     // Dev mode wil print the mail to console
     if (this.devMode) {
-      console.log(
-        `[pa/mailer] New email to ${to} for ${template} - ${JSON.stringify(dynamicTemplateData)}`
+      logger.info(
+        `[pa/mailer:dev] New email to ${to} for ${template} - ${JSON.stringify(dynamicTemplateData)}`
       );
       return;
     }
@@ -58,8 +59,11 @@ export class Mailer {
         templateId: this.templates[template],
         dynamicTemplateData,
       });
+
+      logger.info("Sent %s email to %s", template, to);
     } catch (error) {
-      console.log("[pa/mailer] Failed to send email", JSON.stringify(error));
+      logger.error("Error occured while sending %s email to %s", template, to);
+      logger.error(error);
     }
   }
 }

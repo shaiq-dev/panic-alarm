@@ -5,6 +5,7 @@ import { User } from "@prisma/client/edge";
 import { COOKIE_SECURE_AUTH_TOKEN } from "@/constants/app-strings";
 import prisma from "@/lib/db";
 import { JWTPayload } from "jose";
+import logger from "../../logging";
 import { decode, encode } from "./jwt";
 
 export interface AuthorizationOptions<P extends JWTPayload> {
@@ -98,7 +99,8 @@ export const getSession = async (
       return [true, user];
     }
   } catch (error) {
-    console.error(error);
+    logger.error("getSession exception while retreiving user");
+    logger.error(error);
   }
 
   return [false, null];

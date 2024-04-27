@@ -30,7 +30,6 @@ export class Cypher {
 
       return Buffer.concat([iv, encryptedValueBuffer, cipher.getAuthTag()]).toString("hex");
     } catch (error) {
-      console.log("[pa/cypher] Error encrypting", error);
       return null;
     }
   }
