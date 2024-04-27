@@ -2,6 +2,7 @@
 
 import { createValidationContext } from "@/lib/auth";
 import { isUserRegistered } from "@/lib/auth/utils";
+import logger from "@/logging";
 import { ActionResponse } from "@/types";
 
 export interface SigninInput {
@@ -13,6 +14,8 @@ export const signin = async (
 ): Promise<ActionResponse<{ validationId: string }>> => {
   const { email } = input;
   const isUser = await isUserRegistered(email);
+
+  logger.info("New signin request received for %s, %o", email, { isUser });
 
   if (!isUser) {
     return {

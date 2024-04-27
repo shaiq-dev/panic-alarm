@@ -2,6 +2,7 @@
 
 import { createValidationContext } from "@/lib/auth";
 import prisma from "@/lib/db";
+import logger from "@/logging";
 import { ActionResponse } from "@/types";
 
 export type CreateAccountInput = {
@@ -13,6 +14,9 @@ export const createAccount = async (
   input: CreateAccountInput
 ): Promise<ActionResponse<{ validationId: string }>> => {
   const { email } = input;
+
+  logger.info("New signup request received for '%s'", email);
+
   const existing = await prisma.user.findUnique({
     select: {
       id: true,

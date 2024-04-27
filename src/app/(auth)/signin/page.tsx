@@ -42,11 +42,8 @@ export default function SigninPage() {
     setLoading(true);
     const resp = await signin({ ...values });
 
-    console.log({ resp });
-
     if (!resp.ok) {
       setLoading(false);
-      console.log("Error occurred", resp.error);
       return;
     }
 

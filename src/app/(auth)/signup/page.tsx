@@ -48,11 +48,8 @@ export default function SignupPage() {
     setLoading(true);
     const resp = await createAccount(values);
 
-    console.log({ resp });
-
     if (!resp.ok) {
       setLoading(false);
-      console.log("Error occurred", resp.error);
       return;
     }
 
