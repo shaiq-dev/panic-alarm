@@ -1,16 +1,23 @@
+import { StringRecord } from "@/types";
 import mail, { MailService } from "@sendgrid/mail";
 
-export type Templates = "signin" | "signup" | "addNotifier";
+export type DynamicTemplateData = {
+  signin: StringRecord<"otp">;
+  signup: StringRecord<"otp">;
+  addNotifier: StringRecord<"watchOwner" | "watchName" | "doc_link" | "verification_link">;
+};
 
-export type SendData = {
+export type Template = keyof DynamicTemplateData;
+
+export type SendData<T extends Template> = {
   to: string;
-  dynamicTemplateData: Record<string, unknown>;
+  dynamicTemplateData: DynamicTemplateData[T];
 };
 
 export class Mailer {
   private mail: MailService;
 
-  private templates: Record<Templates, string>;
+  private templates: Record<Template, string>;
 
   private from: string;
 
@@ -30,7 +37,7 @@ export class Mailer {
     this.from = process.env.SENDGRID_FROM_ADDRESS as string;
   }
 
-  async send(template: Templates, data: SendData) {
+  async send(template: Template, data: SendData<Template>) {
     const { to, dynamicTemplateData } = data;
 
     // Dev mode wil print the mail to console
