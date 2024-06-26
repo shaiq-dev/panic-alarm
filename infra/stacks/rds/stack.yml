@@ -1,0 +1,118 @@
+Parameters:
+  Environment:
+    Description: Environment type (i.e. dev, canary, preprod, prod)
+    Type: String
+
+  EngineVersion:
+    Description: Database engine version
+    Type: String
+
+  InstanceClass:
+    Description: Database instance class
+    Type: String
+    Default: db.t2.micro # Default to t2.micro
+
+Conditions:
+  IsProduction: !Equals [!Ref Environment, "prod"]
+
+Mappings:
+  DatabaseFamilyMap:
+    "15.3":
+      "family": "postgres15"
+
+Resources:
+  DatabaseSubnetGroup:
+    # Subnet group for RDS instances (must be in different Availability Zones in the same region)
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Database subnet group
+      SubnetIds: !Split [",", "Fn::ImportValue": vpc-PublicSubnets]
+
+  DatabaseParameterGroup:
+    # Custom database parameter group
+    Type: AWS::RDS::DBParameterGroup
+    Properties:
+      Description: Custom database parameter group
+      Family: !FindInMap [DatabaseFamilyMap, !Ref EngineVersion, "family"]
+      Parameters:
+        shared_preload_libraries: auto_explain,pg_stat_statements,pg_hint_plan,pgaudit
+        log_statement: "ddl"
+        log_connections: "1"
+        log_disconnections: "1"
+        log_lock_waits: "1"
+        log_min_duration_statement: "5000"
+        auto_explain.log_min_duration: "5000"
+        auto_explain.log_verbose: "1"
+        log_rotation_age: "1440"
+        log_rotation_size: "102400"
+        rds.log_retention_period: "10080"
+        random_page_cost: "1"
+        track_activity_query_size: "16384"
+        idle_in_transaction_session_timeout: "7200000"
+        statement_timeout: "7200000"
+        search_path: '"$user",public'
+
+  DatabaseMasterSecret:
+    # Master database secret
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: PostgreSQL database master secrets
+      GenerateSecretString:
+        SecretStringTemplate: '{ "username": "master" }'
+        GenerateStringKey: "password"
+        ExcludeCharacters: '`''"&@/\'
+        PasswordLength: 16
+
+  DatabaseServiceSecret:
+    # Service database secret
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: PostgreSQL database service secrets
+      GenerateSecretString:
+        SecretStringTemplate: "{ }"
+        GenerateStringKey: "password"
+        ExcludeCharacters: '`''"&@/\'
+        PasswordLength: 16
+
+  DatabaseInstance:
+    # Create a standalone RDS PostgreSQL instance
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceClass: !Ref InstanceClass
+      Engine: postgres
+      EngineVersion: !Ref EngineVersion
+      MasterUsername: !Sub "{{resolve:secretsmanager:${DatabaseMasterSecret}:SecretString:username}}"
+      MasterUserPassword: !Sub "{{resolve:secretsmanager:${DatabaseMasterSecret}:SecretString:password}}"
+      DBSubnetGroupName: !Ref DatabaseSubnetGroup
+      DBParameterGroupName: !Ref DatabaseParameterGroup
+      StorageEncrypted: true
+      PubliclyAccessible: true
+      BackupRetentionPeriod: !If [IsProduction, 28, 7]
+      VPCSecurityGroups:
+        - Fn::ImportValue: vpc-RdsSecurityGroupId
+      # 7:00AM IST
+      PreferredBackupWindow: 01:30-02:00
+      # 10:20PM IST
+      PreferredMaintenanceWindow: Wed:17:00-Wed:17:30
+      AllocatedStorage: 20
+
+Outputs:
+  DatabaseInstanceName:
+    Description: Database instance name
+    Value: !Ref DatabaseInstance
+
+  DatabaseEndpointAddress:
+    Description: Database endpoint address
+    Value: !GetAtt DatabaseInstance.Endpoint.Address
+
+  DatabaseEndpointPort:
+    Description: Database endpoint port
+    Value: !GetAtt DatabaseInstance.Endpoint.Port
+
+  DatabaseMasterSecret:
+    Description: Database master secret
+    Value: !Ref DatabaseMasterSecret
+
+  DatabaseServiceSecret:
+    Description: Database service secret
+    Value: !Ref DatabaseServiceSecret
