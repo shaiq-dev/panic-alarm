@@ -1,0 +1,125 @@
+# Here I will be using only public subnets. Private subnets will require
+# NAT Gateways and I need to keep this project running for free (almost).
+
+Parameters:
+  CidrBlock:
+    Type: String
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
+
+  PublicSubnet1CidrBlock:
+    Type: String
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
+
+  PublicSubnet2CidrBlock:
+    Type: String
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
+
+Resources:
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref CidrBlock
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+
+  InternetGateway:
+    # Internet gateway for the VPC (required to allow outbound internet access)
+    Type: AWS::EC2::InternetGateway
+
+  InternetGatewayVpcAttachment:
+    # Attach internet gateway to the VPC
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref Vpc
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicSubnet1:
+    # Public subnet in first availability zone
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref PublicSubnet1CidrBlock
+      AvailabilityZone: !Select
+        - 0 # First availability zone
+        - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: true
+
+  PublicSubnet2:
+    # Public subnet in second availability zone
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: !Ref PublicSubnet2CidrBlock
+      AvailabilityZone: !Select
+        - 1 # Second availability zone
+        - Fn::GetAZs: ""
+      MapPublicIpOnLaunch: true
+
+  PublicSubnetRouteTable:
+    # Route table for public subnet
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+
+  PublicSubnetRoute:
+    # Route traffic to the internet gateway by default (allows access to the internet)
+    DependsOn: InternetGatewayVpcAttachment
+    Type: AWS::EC2::Route
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+      RouteTableId: !Ref PublicSubnetRouteTable
+
+  PublicSubnet1RouteTableAssociation:
+    # Associate the route table with the first public subnet (makes the subnet public)
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicSubnetRouteTable
+
+  PublicSubnet2RouteTableAssociation:
+    # Associate the route table with the second public subnet (makes the subnet public)
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref PublicSubnetRouteTable
+
+  # Secuirty Groups
+
+  RdsSecurityGroup:
+    # Security group for RDS cluster
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: RDS security group
+      SecurityGroupIngress:
+        # Allow PostgreSQL port from everywhere
+        - IpProtocol: tcp
+          FromPort: 5432
+          ToPort: 5432
+          CidrIp: 0.0.0.0/0
+      VpcId: !Ref Vpc
+
+Outputs:
+  VpcId:
+    Description: VPC identifier
+    Value: !Ref Vpc
+    Export:
+      Name: !Sub ${AWS::StackName}-VpcId
+
+  CidrBlock:
+    Description: VPC CIDR block
+    Value: !Ref CidrBlock
+    Export:
+      Name: !Sub ${AWS::StackName}-CidrBlock
+
+  PublicSubnets:
+    Description: Public subnets
+    Value: !Sub ${PublicSubnet1},${PublicSubnet2}
+    Export:
+      Name: !Sub ${AWS::StackName}-PublicSubnets
+
+  RdsSecurityGroupId:
+    Description: RDS security group id
+    Value: !Ref RdsSecurityGroup
+    Export:
+      Name: !Sub ${AWS::StackName}-RdsSecurityGroupId
