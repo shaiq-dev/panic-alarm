@@ -17,8 +17,8 @@ Conditions:
 
 Mappings:
   DatabaseFamilyMap:
-    "15.3":
-      "family": "postgres15"
+    "16.3":
+      "family": "postgres16"
 
 Resources:
   DatabaseSubnetGroup:
